@@ -1,0 +1,21 @@
+{
+  "name": "vibetasking",
+  "displayName": "VibeTasking",
+  "version": "1.0.282",
+  "description": "Build, run and operate agentic automations on your VibeTasking workspaces: the VibeTasking connector and the skills that teach your assistant to use it.",
+  "author": {
+    "name": "VibeTasking",
+    "email": "info@vibetasking.com",
+    "url": "https://vibetasking.com"
+  },
+  "homepage": "https://github.com/vibetasking/vibetasking-plugin",
+  "repository": "https://github.com/vibetasking/vibetasking-plugin",
+  "license": "MIT",
+  "keywords": [
+    "automation",
+    "agents",
+    "workflows",
+    "mcp",
+    "vibetasking"
+  ]
+}

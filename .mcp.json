@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "vibetasking": {
+      "type": "http",
+      "url": "https://api.vibetasking.com/mcp"
+    }
+  }
+}
