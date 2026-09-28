@@ -1,0 +1,16 @@
+{
+  "name": "vibetasking",
+  "owner": {
+    "name": "VibeTasking",
+    "email": "info@vibetasking.com",
+    "url": "https://vibetasking.com"
+  },
+  "description": "Build, run and operate agentic automations on your VibeTasking workspaces: the VibeTasking connector and the skills that teach your assistant to use it.",
+  "plugins": [
+    {
+      "name": "vibetasking",
+      "source": ".",
+      "description": "Build, run and operate agentic automations on your VibeTasking workspaces: the VibeTasking connector and the skills that teach your assistant to use it."
+    }
+  ]
+}

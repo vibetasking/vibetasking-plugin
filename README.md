@@ -11,7 +11,7 @@ This plugin connects your AI assistant to your VibeTasking account and teaches i
 
 ## Install
 
-- **Claude**: add VibeTasking from the directory under Customize, in claude.ai or the desktop app. It then works in chat, Cowork and Claude Code.
+- **Claude**: this repository is also a plugin marketplace. In Claude Code, run `/plugin marketplace add vibetasking/vibetasking-plugin` and then `/plugin install vibetasking@vibetasking`. In claude.ai or the desktop app, add the same marketplace under Customize, then Plugins. A plugin added on claude.ai also reaches your Claude Code sessions.
 - **Other assistants**: this repository follows the [Agent Plugins](https://agent-plugins.org) format (`plugin.json`, `mcp.json` and `skills/` at the root), so any client that reads it can install the plugin from here.
 - **Connector only**: any MCP client can add `https://api.vibetasking.com/mcp` as a remote server and sign in. The skills are then served by the connector itself.
 
