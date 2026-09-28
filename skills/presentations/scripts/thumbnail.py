@@ -5,7 +5,7 @@ import tempfile
 import zipfile
 from pathlib import Path
 
-from office.soffice import get_soffice_env
+from office.soffice import soffice_command
 from parts import slide_list
 from PIL import Image, ImageDraw, ImageFont
 
@@ -119,18 +119,9 @@ def convert_to_images(pptx_path: Path, temp_dir: Path) -> list[Path]:
     pdf_path = temp_dir / f"{pptx_path.stem}.pdf"
 
     result = subprocess.run(
-        [
-            "soffice",
-            "--headless",
-            "--convert-to",
-            "pdf",
-            "--outdir",
-            str(temp_dir),
-            str(pptx_path),
-        ],
+        soffice_command(["--headless", "--convert-to", "pdf", "--outdir", str(temp_dir), str(pptx_path)]),
         capture_output=True,
         text=True,
-        env=get_soffice_env(),
     )
     if result.returncode != 0 or not pdf_path.exists():
         raise RuntimeError("PDF conversion failed")

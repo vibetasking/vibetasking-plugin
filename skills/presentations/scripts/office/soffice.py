@@ -1,4 +1,3 @@
-import os
 import socket
 import subprocess
 import sys
@@ -116,20 +115,17 @@ int close(int fd) {
 """
 
 
-def get_soffice_env() -> dict:
-    env = os.environ.copy()
-    env["SAL_USE_VCLPLUGIN"] = "svp"
+def soffice_command(args: list[str]) -> list[str]:
+    """`soffice` with its settings added through `env`, so the rest of the environment passes through untouched."""
 
+    settings = ["SAL_USE_VCLPLUGIN=svp"]
     if _needs_shim():
-        shim = _ensure_shim()
-        env["LD_PRELOAD"] = str(shim)
-
-    return env
+        settings.append(f"LD_PRELOAD={_ensure_shim()}")
+    return ["env", *settings, "soffice", *args]
 
 
 def run_soffice(args: list[str], **kwargs) -> subprocess.CompletedProcess:
-    env = get_soffice_env()
-    return subprocess.run(["soffice"] + args, env=env, **kwargs)
+    return subprocess.run(soffice_command(args), **kwargs)
 
 
 def _needs_shim() -> bool:
