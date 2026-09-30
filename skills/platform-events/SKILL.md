@@ -56,7 +56,7 @@ The right hand column names the operations that settle each kind. Read a run's c
 | `TRIGGER_MISSED` | `expected_at` | Fire the run the schedule missed. | `start_run` with `agent_id` |
 | `TRIGGER_LIMIT` | | Get the upgrade URL to the owner, re-enable the trigger once the plan changed. | `billing_checkout`, `upsert_trigger` with `enabled` |
 | `SECRET_REDACTED` | `kinds`, `sources` | Stop the run and tell the owner which credential to rotate. | `stop_run`, `send_message` |
-| `SECRET_REFUSED` | `names`, `destination`, `surface` | Add the destination to the credential's hosts only when its owner confirms it. | `upsert_vault_item` or `upsert_secret` with `allowed_hosts` |
+| `SECRET_REFUSED` | `names`, `destination`, `surface`, and `credentials` (`vault_item`, `host`) when a host on a Vault item would open it | Add the host to the credential's hosts only when its owner confirms it. | `upsert_vault_item` or `upsert_secret` with `allowed_hosts` |
 | `CALL_MISSED` | `contact_id`, `channel_id` | Call the contact back, or text a follow-up. | `start_run` with `contact_id` on a voice or text channel agent |
 | `BUNDLE_UPDATED` | `status`, `failure_reason` or `valid_until` | Collect what the rejection asks for from the owner, then resubmit. | `POST /public/bundles/{bundle_id}/documents`, `POST /public/bundles/{bundle_id}/submit` |
 | `TOLLFREE_VERIFICATION_UPDATED` | `e164`, `status`, `rejection_reasons` | Resubmit the verification with the corrected answers. | `submit_tollfree_verification` |

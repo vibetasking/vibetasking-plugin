@@ -26,7 +26,7 @@ When `start_run` targets an agent connected to a channel, pass ``contact_id`` ma
 - **Email**: a normal email address.
 - **LinkedIn**: the contact's member id (``ACoAA…``). Profile URLs and ``in/slug`` handles are rejected.
 
-When the agent serves more than one channel, or the ``contact_id`` format is valid for several (a phone number fits both WhatsApp and SMS), pass ``channel_id`` too. If the agent has no channel, do not pass ``contact_id``.
+When the agent serves more than one channel, or the ``contact_id`` format is valid for several (a phone number fits both WhatsApp and SMS), pass ``channel_id`` too. If the agent has no channel, do not pass ``contact_id``. A channel with no agent is reached with ``channel_id`` and ``contact_id`` and no ``agent_id``: its people answer its conversations, so it takes ``direct: true`` sends, and on a CUSTOM channel its router's injected messages, and nothing runs.
 
 The ``text`` you pass is delivered to the target agent as a USER prompt. It is *not* the literal outbound payload. You are impersonating the contact. The target agent reads it and decides what to send to the contact through the channel. Phrase it as an instruction to that agent (e.g. "Greet the contact and confirm their appointment for Tuesday at 3pm").
 
