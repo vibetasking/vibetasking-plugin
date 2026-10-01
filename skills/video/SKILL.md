@@ -133,7 +133,7 @@ tesseract pre.png out --psm 6 && cat out.txt
 ## Workflows
 
 - **Inspect before extending**: Extract a frame to see what's happening at a specific moment before deciding how to continue the scene. Use `--time` to sample different points in the video.
-- **Inspect a customer/attachment video**: Use `--interval` to pull a handful of representative frames, then look at them (or pass to an image-analysis step) before writing up what you saw. Don't fall back to hand-rolled `ffmpeg -ss` loops with a guessed interval -- use the script.
+- **Inspect a customer/attachment video**: When you can dispatch a sub-agent, send the file to `dispatch_agent` with `specialist` set to "viewer" and your question, since the viewer watches and listens to the whole recording and answers with timestamps. Pull the frames you need to show, OCR or verify with `--interval` or `--time`, using the script rather than hand-rolled `ffmpeg -ss` loops.
 - **Review video evidence (damage claims, disputes)**: probe metadata, build one contact sheet for the overview, extract full-size frames only at the timestamps that matter, scene-scan if you suspect edited footage, and OCR frames to read reference labels. This replaces re-deriving the pipeline from scratch each run.
 - **Draft cheap, then finish**: Generate at 360p until the shot is right, then regenerate the chosen prompt at 720p or above.
 - **Iterate on a clip**: Generate once, then refine with `edit_video` ("slower camera", "warmer light", "remove the logo on the wall") instead of regenerating from scratch. Each edit keeps what you did not mention.
@@ -141,14 +141,15 @@ tesseract pre.png out --psm 6 && cat out.txt
 - **Bridge two stills**: Pass `first_frame` and `last_frame` to `generate_video` to generate the motion between a starting and ending image, complete with audio. The same image as both gives a loop.
 - **Keep a subject consistent**: Pass `reference_images` of a person, character, or product and name each one in the prompt as `<IMAGE_REF_N>`.
 - **Image to video**: Generate an image with `banana generate_image`, then animate it with `omni generate_video` and `first_frame`.
-- **Transcribe + plan**: Use `speech speech_to_text` (it accepts mp4/webm directly; see the speech skill) to transcribe a video's audio, then use the transcript to decide where to extract frames or how to extend the scene.
+- **Transcribe + plan**: Extract the audio (`ffmpeg -i video.mp4 -vn -c:a libmp3lame -q:a 4 audio.mp3`), transcribe it with `speech speech_to_text` (see the speech skill), then use the transcript to decide where to extract frames or how to extend the scene.
 - **Presentation to video**: Create slides with the presentations skill, convert to images, then animate each slide into a video clip.
 - **Add a soundtrack**: Generate a track with `lyria generate_music` (see the music skill for the timed-structure prompt and the ffmpeg mux), then mux it under the clip with `-shortest`.
 
-## When to use this vs Remotion
+## When to use this vs Tesseract and Remotion
 
-- **Use this skill** for realistic/cinematic video from a text prompt or image (no code needed, AI-generated visuals).
-- **Use Remotion** when the user needs precise control: text animations, data visualizations, branded intros, multi-scene compositions with transitions, or anything that requires exact timing and layout.
+- **Use this skill** when the footage itself has to be generated from a prompt or an image.
+- **Use Tesseract** when the user supplies footage to cut, for ads and social edits, or for a project they can revise layer by layer.
+- **Use Remotion** when the video is data driven, rendered in batches from parameters, or needs chart libraries, Lottie, maps or three.js.
 
 Rule of thumb: if the user describes a **scene** ("a cat dancing in the rain"), use this. If they describe a **design** ("animated bar chart with our quarterly numbers"), use Remotion.
 

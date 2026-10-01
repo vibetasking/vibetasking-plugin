@@ -115,7 +115,7 @@ def _condense_xml(xml_file: Path) -> None:
 
     except Exception as e:
         print(f"ERROR: Failed to parse {xml_file.name}: {e}", file=sys.stderr)
-        raise
+        raise e
 
 
 if __name__ == "__main__":

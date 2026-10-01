@@ -2,11 +2,11 @@
 
 An agent on the **EXTERNAL** engine is an agent whose harness is yours: your own process, your own model, your own loop. The platform keeps everything around it. It holds the agent as a resource users can find, attach channels and triggers to and read the history of, it runs the channel (one conversation run per contact, dedup, working hours, the waiting room, operator takeover, delivery bookkeeping), it stores every message and every step of the transcript, it notifies, evaluates and learns from the runs, and it offers you each turn. You take the turn, do the work through the platform's tools, and close it. Nothing about channels, contacts or run state is yours to implement.
 
-This is the file for a **turn key**: `get_me` with one names the ``run_id`` and ``agent_id`` you are acting for, and the ``external`` toolset it holds carries the turn operations named below. Every other key builds and operates automations and never needs this file.
+This file is for an agent whose harness is yours. Registering it, receiving its turns and claiming them take your own key, and the work inside a turn takes the **turn key** a claim returns: `get_me` with one names the ``run_id`` and ``agent_id`` you are acting for, and the ``external`` toolset it holds carries the turn operations named below. A key that only builds and operates automations on the platform's own engines never needs this file.
 
 ## Registering
 
-`upsert_agent` with ``engine: "EXTERNAL"`` creates the agent, or moves an existing one to your harness. Give it a ``name`` the users will recognise and a ``description``. Its ``prompt`` is yours to use or ignore: the platform never runs it, but it is shown to the workspace and handed to you with each turn's run, so many external agents keep their instructions there rather than in their own config. Then wire it as any agent: `upsert_channel` with the agent's id attaches a WhatsApp number, a Telegram bot, a mailbox or a phone line, `upsert_trigger` gives it a schedule or an inbound webhook, and `start_run` with its ``agent_id`` starts a run of it by hand. Every run created from the agent, by a contact's message, a schedule, another agent or a person in the app, executes on your harness.
+`upsert_agent` with ``engine: "EXTERNAL"`` creates the agent, or moves an existing one to your harness. Give it a ``name`` the users will recognise and a ``description``. Its ``prompt`` is yours to use or ignore: the platform never runs it, but the workspace sees it on the agent and you read it back with your own key through `query_data` on ``agents``, so many external agents keep their instructions there rather than in their own config. Then wire it as any agent: `upsert_channel` with the agent's id attaches a WhatsApp number, a Telegram bot, a mailbox or a phone line, `upsert_trigger` gives it a schedule or an inbound webhook, and `start_run` with its ``agent_id`` starts a run of it by hand. Every run created from the agent, by a contact's message, a schedule, another agent or a person in the app, executes on your harness.
 
 ## Receiving turns
 
@@ -23,8 +23,7 @@ whole fetched page is returned.
 
 The listener saves pending deliveries in `--cursor-file` before forwarding and retries them
 before polling again, including after a restart. Use one persistent state file per listener,
-in a private directory: it contains the claimed turn's key. Existing plain cursor files are
-imported automatically; the resulting JSON state needs the updated listener. `--from-now`
+in a private directory: it contains the claimed turn's key. `--from-now`
 delivers saved pending work before starting a fresh cursor. Pending work must be resumed
 with the same connection, filtering and forwarding settings that received it.
 
@@ -32,9 +31,9 @@ Delivery is **at least once**. Every forwarded JSON object has `delivery_id`
 (`event:<activity id>` or `turn:<turn id>`), also sent as `X-Ocean-Delivery-Id` over HTTP.
 Durably deduplicate that identity before doing the work and return 2xx only after accepting
 it. A lost acknowledgement can repeat a delivery. Stdout only acknowledges that the line
-was flushed, not that your consumer saved it. An unavailable receiver blocks later events;
-the outbox does not extend the turn deadline or recover a claim response lost before it
-could be saved locally.
+was flushed, not that your consumer saved it. An unavailable receiver blocks later events.
+Saving a delivery does not extend the turn deadline, and it cannot recover a claim response
+lost before the listener saved it.
 
 Never subscribe your own agent to ``MESSAGE_INSERTED``: the offer already is the event, and every contact message would fire twice.
 
@@ -60,7 +59,7 @@ Nothing needs a phone. `start_run` with your ``agent_id``, a ``contact_id`` in t
 
 ## Switching hats
 
-Your key can also speak as the workspace's operator, the person who takes a conversation over from the agent. `send_message` with ``role`` OPERATOR on a conversation run delivers the text to the contact and puts the run in operator hold: no turn is offered while it holds, the contact's replies still land as ``MESSAGE_INSERTED`` events, and the hold lifts after ``operator_timeout`` seconds of silence or a USER post, at which point the turn is offered again. A turn you hold when you post as the operator closes on its own. The opposite direction, escalating to a real person, is `send_message` with ``handoff`` from inside a turn.
+Your key can also speak as the workspace's operator, the person who takes a conversation over from the agent. `send_message` with ``role`` OPERATOR on a conversation run delivers the text to the contact and puts the run in operator hold: no turn is offered while it holds, the contact's replies still land as ``MESSAGE_INSERTED`` events, and the hold lifts after ``operator_timeout`` seconds of silence or a USER post, at which point the turn is offered again. Posting as the operator revokes a turn you hold, with ``reason`` ``operator`` (see **Closing the turn**). The opposite direction, escalating to a real person, is `send_message` with ``handoff`` from inside a turn.
 
 The same stream carries the rest of the workspace's events (``RUN_FAILED``, ``RUN_TURN_REVOKED``, ``INTEGRATION_REAUTH``, ``LOW_CREDIT`` and the others) with the same shapes webhooks deliver, so one loop can both run the agent and react to what happens around it.
 
@@ -70,7 +69,7 @@ From the claim to the close you hold a **turn key**, a run-bound API key: `get_m
 
 ## The run's tools
 
-`call_toolkit_tool` under the run's key runs a tool **as the run**: the instance may be omitted and resolves to the one the run is linked to (pass one of ``integration_id`` / ``asset_id`` / ``channel_id`` only when the agent has several of a type), a channel send with no recipient goes to the run's bound contact, ``reach_external`` is enforced, and the send is recorded on the conversation with its delivery state. The turn payload's ``toolkits`` names what the key reaches. Read a tool's schema before calling it: `list_toolkit_tools` with the toolkit's ``name`` and the instance id, or `get_toolkit_tool` for one tool. Sandbox-only toolkits (shell, browser, CLIs) are not reachable headlessly: delegate that work to a VIBETASKING run with `start_run`, and read its outcome with `wait_for_run`.
+`call_toolkit_tool` under the run's key runs a tool **as the run**: the instance may be omitted and resolves to the one the run is linked to (pass one of ``integration_id`` / ``asset_id`` / ``channel_id`` only when the agent has several of a type), a channel send with no recipient goes to the run's bound contact, ``reach_external`` is enforced, and the send is recorded on the conversation with its delivery state. The turn payload's ``toolkits`` names what the key reaches. Read a tool's schema before calling it: `list_toolkit_tools` with the toolkit's ``name`` and the instance id, or `get_toolkit_tool` for one tool. Sandbox-only toolkits (shell, browser, CLIs) are not reachable headlessly: delegate that work to a run on any engine but EXTERNAL with `start_run` (see **Choosing the delegation target** in `delegating.md`), and read its outcome with `wait_for_run`.
 
 ## Replying
 
@@ -90,4 +89,4 @@ Calls to the platform are traced on their own. What happens on your side is not,
 
 `final_result` with the turn key ends the turn: ``text`` becomes the run's result and its last message (empty when there was nobody to answer, a schedule firing for instance), ``files`` its attachments, and ``blocker`` opens a ``RUN_BLOCKED`` item on the agent for what only a person can clear. The platform then settles the run: it completes, or is offered to you again at once when messages arrived while you worked, watchers hear the outcome, evaluations run, and the turn key stops working.
 
-A turn can be taken from you before you close it. A person posting as the operator, a stop from the app, the five minute claim window or the thirty minute turn ceiling each revoke it: the platform publishes ``RUN_TURN_REVOKED`` with the ``reason`` (``operator``, ``stopped``, ``unclaimed``, ``timeout``) and every further call with the turn key, `final_result` included, answers 409. Stop working on that turn when you see either, and never retry a revoked turn: the next offer, if any, is a new one.
+A turn can be taken from you before you close it. A person posting as the operator, a stop from the app, the five minute claim window or the thirty minute turn ceiling each revoke it: the platform publishes ``RUN_TURN_REVOKED`` with the ``reason`` (``operator``, ``stopped``, ``unclaimed``, ``timeout``) and deletes the turn key, so every further call with it, `final_result` included, is refused (401 once the key is gone, 409 when the call raced the revoke). Stop working on that turn when you see either, and never retry a revoked turn: the next offer, if any, is a new one.

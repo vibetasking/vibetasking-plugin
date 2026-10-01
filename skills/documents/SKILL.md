@@ -64,8 +64,10 @@ word add_heading --help               # show parameters for an action
 word add_heading --json '{"filename": "doc.docx", "text": "My Title", "level": 1}'
 ```
 
-You can only apply styles, not read them. Don't include styling in
-text arguments. Use the `style` argument or `word format_text` for
+`word get_document_outline` names each paragraph's style. For how the
+text inside a paragraph is formatted, read `word get_document_xml`, where
+run formatting sits under `<w:rPr>`. Keep styling out of
+text arguments: use the `style` argument, or `word format_text` for
 existing paragraphs. The `color` argument is a hex code without the
 "#" prefix.
 

@@ -492,9 +492,9 @@ def detect_torn_fills(path: str | Path, max_pages: int = 200) -> list[dict]:
                     fill, rect = drawing.get("fill"), drawing.get("rect")
                     if fill is None or rect is None or "f" not in (drawing.get("type") or ""):
                         continue
-                    if rect.width < 40 or rect.height < 4:  # hairlines and bullets aren't blocks
+                    if rect.width < 40 or rect.height < 4:  # Hairlines and bullets aren't blocks
                         continue
-                    if rect.width * rect.height > 0.85 * page_area:  # page background, continuous by design
+                    if rect.width * rect.height > 0.85 * page_area:  # Page background, continuous by design
                         continue
                     fills.append((fill, rect))
                     edges.append((rect.y0, rect.y1))

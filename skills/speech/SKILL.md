@@ -49,7 +49,7 @@ The transcript comes back diarized: one line per speaker turn, each prefixed wit
 start and end time in seconds (`[12.3-15.6] A: ...`). Speakers are labeled A, B, C in order of appearance.
 
 Splitting large audio:
-- Files over 25 MB must be split before transcription. Use ffmpeg:
+- A transcription takes up to 30 minutes of audio. Split anything longer with ffmpeg first:
 
 ```bash
 ffmpeg -hide_banner -loglevel error -i long.mp3 -f segment -segment_time 600 -c copy part_%03d.mp3

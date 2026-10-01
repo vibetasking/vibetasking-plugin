@@ -61,7 +61,7 @@ def report(result: dict, *, tolerance_mm: float) -> int:
     if exit_code == 0:
         if not pages:
             print(
-                "OK: no .page divs and no fake-page containers detected — flow-layout HTML. "
+                "OK: no .page divs and no fake-page containers detected: flow-layout HTML. "
                 "Render via pretty_docs html_to_pdf for full checks.",
             )
         else:

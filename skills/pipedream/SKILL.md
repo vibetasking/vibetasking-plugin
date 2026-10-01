@@ -5,7 +5,7 @@ description: Pipedream action discovery and shell usage
 
 # Pipedream
 
-Thousands of third-party services (Gmail, Slack, Google Sheets, etc.) through a unified CLI.
+Thousands of third-party services (Gmail, Google Sheets, etc.) through a unified CLI.
 
 ## Commands
 
@@ -40,5 +40,5 @@ pipedream gmail configure_prop --json '{"action": "gmail_add_label_to_email", "p
 - When no parameter filters what you need, pipe the action's output through shell tools instead of reading it raw. Always `tee` the full output to a file first, so a missed match doesn't force a repeat call:
 
 ```bash
-pipedream gmail list_emails --json '{"maxResults": 100}' | tee emails.json | grep -i -B3 -A8 miguel
+pipedream gmail find_email --json '{"q": "newer_than:7d"}' | tee emails.json | grep -i -B3 -A8 miguel
 ```

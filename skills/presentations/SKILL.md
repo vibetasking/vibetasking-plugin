@@ -114,8 +114,8 @@ python system/skills/presentations/scripts/clean.py unpacked/
 python system/skills/presentations/scripts/office/pack.py unpacked/ output.pptx
 ```
 
-See `system/skills/presentations/editing.md` for full details and
-the redlining cycle.
+See `system/skills/presentations/editing.md` for the template workflow,
+the scripts and the formatting rules.
 
 ## Dependencies (sandbox-provided)
 

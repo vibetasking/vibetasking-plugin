@@ -31,7 +31,7 @@ def main() -> int:
         f"{path.name}: {format_bytes(result.original_bytes)} → "
         f"{format_bytes(result.final_bytes)} ({result.reduction_pct:.0f}% smaller)",
     )
-    print(f"steps: {', '.join(result.steps) if result.steps else '(none — already optimal)'}")
+    print(f"steps: {', '.join(result.steps) if result.steps else '(none, already optimal)'}")
 
     if result.exceeded_cap:
         print(f"\nERROR: PDF still exceeds the {args.cap_mb:.0f} MB cap after maximum compression.")

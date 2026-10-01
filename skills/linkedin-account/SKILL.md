@@ -1,11 +1,11 @@
 ---
 name: linkedin-account
-description: Direct messaging, connections, invitations both ways, people/company/job
-  search, posts, and job postings through the workspace's connected LinkedIn account
-  — the `linkedin` CLI (LinkedinToolkit, Unipile-backed). Not `composio linkedin`
-  (OAuth company-page posting, a different account and action catalog) and not the
-  browser-automation `linkedin` skill (session fallback for runs with no connected
-  account).
+description: Direct messages, connections, invitations both ways, people, company,
+  job and post search, posts, and job postings through the workspace's connected LinkedIn
+  account, with the `linkedin` CLI (LinkedinToolkit, backed by Unipile). Use it first
+  for any LinkedIn task when the run has this toolkit. `composio linkedin` is a separate
+  OAuth integration with its own account and actions, and the browser `linkedin` skill
+  covers runs with no connected account plus company employees, the feed and notifications.
 ---
 
 # LinkedIn account (LinkedinToolkit)
@@ -19,7 +19,7 @@ drive.
 
 - **`composio linkedin <action>`** is a *different* toolkit (`LinkedinComposioToolkit`,
   the official LinkedIn OAuth API) with its own connected account. This skill's toolkit
-  now covers posting too, so reach for `composio linkedin` only when the workspace has
+  covers posting as well, so reach for `composio linkedin` only when the workspace has
   that integration connected and no LINKEDIN seat, or for its ad-targeting and
   share-stats reads. If the task is messaging, connections, search, or invitations,
   the table below is the one you want and `composio linkedin --help` is a dead end.
@@ -63,7 +63,7 @@ Network and invitations:
 | `list_followers` | `limit` (default 50), `cursor` | who follows this account |
 | `list_following` | `limit` (default 50), `cursor` | who this account follows |
 | `send_invitation` | `member_id` (req), `note` (300 chars max) | connection request |
-| `list_sent_invitations` | `limit` (default 50, 100 max) | pending sent invitations, each with `invitation_id` |
+| `list_sent_invitations` | `limit` (default 50) | pending sent invitations, each with `invitation_id`, read across as many pages as `limit` needs |
 | `cancel_invitation` | `invitation_id` (req, from `list_sent_invitations`) | withdraw a stale invitation. LinkedIn blocks re-inviting the same person for weeks afterwards |
 | `list_received_invitations` | `limit` (default 50) | pending invitations others sent this account, each with `invitation_id`, the inviter, and any note |
 | `accept_invitation` | `invitation_id` (req) | accept — the sender becomes a 1st-degree connection |
@@ -92,7 +92,7 @@ Jobs and recruiting (job postings work on any account; pipeline actions need Rec
 | `list_job_postings` | `category` (active/draft/closed), `limit`, `cursor` | the account's job postings |
 | `create_job_posting` | `title`, `location`, `workplace` (ON_SITE/HYBRID/REMOTE), `description` (all req), `company_name` or `company_id`, `employment_status`, `screening_questions`, `auto_rejection_template` | creates a **draft**, nothing goes live |
 | `get_job_posting` | `job_id` (req), `service` (CLASSIC/RECRUITER) | state, counters, cost |
-| `edit_job_posting` | `job_id` (req) + any create field | only passed fields change |
+| `edit_job_posting` | `job_id` (req), `title`, `location`, `workplace`, `description`, `employment_status` | only the fields passed change, and at least one is needed |
 | `publish_job_posting` | `draft_id` (req), `mode` (FREE default), `budget` | **PROMOTED modes spend the company's real LinkedIn job budget** — only with the user's explicit ask and budget |
 | `solve_job_checkpoint` | `draft_id` (req), `code` (req) | answer the verification code LinkedIn emails on publish |
 | `close_job_posting` | `job_id` (req), `service` | close a live posting |

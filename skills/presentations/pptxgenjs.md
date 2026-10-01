@@ -216,7 +216,7 @@ const iconData = await iconToBase64Png(FaCheckCircle, "#4472C4", 256);
 slide.addImage({ data: iconData, x: 1, y: 1, w: 0.5, h: 0.5 });
 ```
 
-**Note**: Use size 256 or higher for crisp icons. Install: `npm install -g react-icons react react-dom sharp`
+**Note**: Use size 256 or higher for crisp icons. Install the packages in the project folder, next to the script that requires them: `npm install pptxgenjs react-icons react react-dom sharp`. The sandbox's system directories are read only, so a global install fails.
 
 ---
 

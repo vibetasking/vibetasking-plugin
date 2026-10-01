@@ -18,15 +18,15 @@ _spec.loader.exec_module(_pdf_lib)
 launch_chromium = _pdf_lib.launch_chromium
 
 # A4 landscape in inches
-SLIDE_WIDTH = Inches(11.6929)
-SLIDE_HEIGHT = Inches(8.2677)
+_SLIDE_WIDTH = Inches(11.6929)
+_SLIDE_HEIGHT = Inches(8.2677)
 
 # Viewport at 96 DPI for A4 landscape (297mm x 210mm)
-VIEWPORT_WIDTH = 1122
-VIEWPORT_HEIGHT = 793
+_VIEWPORT_WIDTH = 1122
+_VIEWPORT_HEIGHT = 793
 
 # 2x for retina-quality screenshots
-DEVICE_SCALE_FACTOR = 2
+_DEVICE_SCALE_FACTOR = 2
 
 
 async def html_slides_to_pptx(html_path: str, output_path: str) -> str:
@@ -36,9 +36,9 @@ async def html_slides_to_pptx(html_path: str, output_path: str) -> str:
     output_path = os.path.abspath(output_path)
 
     prs = Presentation()
-    prs.slide_width = SLIDE_WIDTH
-    prs.slide_height = SLIDE_HEIGHT
-    blank_layout = prs.slide_layouts[6]  # blank slide
+    prs.slide_width = _SLIDE_WIDTH
+    prs.slide_height = _SLIDE_HEIGHT
+    blank_layout = prs.slide_layouts[6]  # Blank slide
 
     tmp_dir = tempfile.mkdtemp(prefix="html_to_pptx_")
 
@@ -46,8 +46,8 @@ async def html_slides_to_pptx(html_path: str, output_path: str) -> str:
         async with async_playwright() as p:
             browser = await launch_chromium(p, headless=True)
             context = await browser.new_context(
-                viewport={"width": VIEWPORT_WIDTH, "height": VIEWPORT_HEIGHT},
-                device_scale_factor=DEVICE_SCALE_FACTOR,
+                viewport={"width": _VIEWPORT_WIDTH, "height": _VIEWPORT_HEIGHT},
+                device_scale_factor=_DEVICE_SCALE_FACTOR,
             )
             page = await context.new_page()
 

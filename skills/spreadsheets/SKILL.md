@@ -42,9 +42,8 @@ These shapes are complete: call them as written. For any other action,
 - `update_values_batch` writes several ranges in one call: `data` is an array of `{"range": ..., "values": [[...]]}` objects, plus top-level `spreadsheet_id` and `value_input_option`.
 - `googlesheets_values_get` returns a dict keyed by A1 notation (e.g., `{"A32": "Hello World"}`). Does NOT return empty cells. Don't assume fewer rows/columns than actually exist.
 - Writing a range is `values_update`, not `update_spreadsheet_values`. `googlesheets_values_update` takes a 2D array (matrix). First element maps to the first cell in the range. Watch for off-by-one errors.
-- Always pass `value_input_option: RAW` on `values_append` and `values_update`, unless a formula genuinely needs USER_ENTERED evaluation. USER_ENTERED tells Sheets to reparse the string as if a human typed it, which silently strips a leading `+` from phone numbers and rewrites date-shaped text into a raw date serial number. Treat any phone-like or date-like text field as RAW-only.
+- Always pass `value_input_option: RAW` on `spreadsheets_values_append` and `values_update`, unless a formula genuinely needs USER_ENTERED evaluation. USER_ENTERED tells Sheets to reparse the string as if a human typed it, which silently strips a leading `+` from phone numbers and rewrites date-shaped text into a raw date serial number. Treat any phone-like or date-like text field as RAW-only.
 - Never assume the first sheet is "Sheet1". Always retrieve actual sheet names first.
-- `googlesheets_query_table` cannot handle non-ASCII column names. If results are unexpected, switch to `googlesheets_batch_get` with explicit A1 ranges.
 - Avoid `googlesheets_get_spreadsheet_info` with `include_grid_data=true` on large spreadsheets (HTTP 413).
 
 ## Python scripts (openpyxl, pandas)
@@ -87,18 +86,11 @@ When comparing documents or sheets, be especially mindful of messy data.
 
 - It's likely an item in one document maps to multiple items in the other.
 
-Tasks that require you to explicitly write down your reasoning, or a justification, must not be automated.
-
-- For these, writing code in your shell that generates text values from formulas is strictly forbidden.
-- You must type out the texts manually, using your file writing tool, `excel_write_data_to_excel` or `googlesheets_values_update`.
-- This does not mean you should forgo using your shell completely. There is value in using it for number crunching.
-- When working on these types of tasks, when you must type out many text values, you should work in batches.
+When each row needs its own written reasoning or justification, write those texts yourself with your file writing tool, `excel_write_data_to_excel` or `googlesheets_values_update`. Text a script assembles from formulas or templates repeats itself and misses what is particular to each row. Use the shell for the number crunching, and write long runs of text in batches.
 
 ## Data verification
 
 - It's easy to make mistakes when writing data. Before doing so, make sure you're certain about what data you're writing, and where.
-- Every time you use a tool that writes data, you must follow up by using a tool that reads said data, to verify it was written correctly.
-- You must be mindful of context, and never verify data in isolation. Simply confirming that a cell's value has been updated is pointless.
-- What you must do is cross-reference the data with its column and row context. Confirm you wrote to the intended cell ranges.
-- When a mistake is detected, you must correct it immediately. First roll back unintended changes, then apply missing changes.
-- If an irreparable mistake is made, you must immediately notify the user and stop the task.
+- After every write, read the range back and check it against its row and column context, since a value in the wrong cell reads as correct in isolation. Confirm you wrote to the intended cell ranges.
+- When the read shows a mistake, roll back what was written by accident, then apply what is missing.
+- When a mistake cannot be repaired, stop and tell the user what happened.

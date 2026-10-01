@@ -8,6 +8,8 @@ description: Holded ERP document and contact operations via the `holded` CLI, an
 
 Holded is an ERP/invoicing platform. API domains: invoicing (contacts, invoices, estimates, credit notes, products, services), accounting, CRM (leads, funnels), projects, and team management.
 
+The action names below are the v2 API's, loaded by a key starting `pat_`. A legacy key loads the v1 API, whose actions are named and paged differently: run `holded --help` for the names this run has.
+
 ## Commands
 
 ```bash

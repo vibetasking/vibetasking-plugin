@@ -18,7 +18,7 @@ composio slack send_message --json '{"channel": "#general", "text": "Hello"}'
 
 You can also pipe JSON via stdin: `echo '{"param": "value"}' | composio <toolkit> <action>`
 
-For a payload built from other commands' output (e.g. `jq`), or any large body, don't pipe straight into `--json @-` and don't inline it — quoting/escaping is fragile and fails silently on nested quotes. Write the JSON to a file and pass `--json-file`, which reads it byte-for-byte:
+For a payload built from other commands' output (e.g. `jq`), or any large body, write the JSON to a file and pass `--json-file`, which reads it byte for byte, rather than quoting it inline:
 
 ```bash
 jq -n --arg id "$ticket_id" '{ticket_id: $id, comment_public: false}' > payload.json
@@ -41,10 +41,6 @@ Recipe shortcut: skip discovery when your recipe provides a known successful app
 ## Don't chain mutating calls with `&&`
 
 When applying the same mutation across several records (e.g. updating 8 tickets), don't chain the `composio` invocations with `&&` in one shell call. `&&` stops at the first failure, so one bad field or argument on record 3 silently drops records 4-8 with no update attempted at all — and the truncated output can look like a clean run at a glance. Issue each mutating call separately (or loop with per-call status checks) so a single failure doesn't take out the rest of the batch, and you can see exactly which records still need the update.
-
-## Harmless startup warning
-
-You may see a log line like `toolkit_name_to_class failed for ComposioToolkit: ModuleNotFoundError: No module named 'ocean.toolkits.composio.'` right before a composio call executes. This is expected — it's the platform falling back to the shell CLI path — not an error in your command. Ignore it and proceed.
 
 ## Tips & Tricks
 
