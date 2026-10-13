@@ -19,6 +19,31 @@ _REMOTE_SCHEMAS = {
     "http://dublincore.org/schemas/xmls/qdc/2003/04/02/dcterms.xsd": "dcterms.xsd",
 }
 
+_XML_GLOBS = ["*.xml", "*.rels"]
+_RELATIONSHIP_ID_ATTRIBUTES = ["id", "embed", "link"]
+
+_DECLARABLE_ROOTS = {
+    "sld",
+    "sldLayout",
+    "sldMaster",
+    "presentation",
+    "document",
+    "workbook",
+    "worksheet",
+    "theme",
+}
+
+_MEDIA_EXTENSIONS = {
+    "png": "image/png",
+    "jpg": "image/jpeg",
+    "jpeg": "image/jpeg",
+    "gif": "image/gif",
+    "bmp": "image/bmp",
+    "tiff": "image/tiff",
+    "wmf": "image/x-wmf",
+    "emf": "image/x-emf",
+}
+
 
 class SchemaSetupError(RuntimeError):
     """The validator's own schemas are missing or do not compile, which no document can cause."""
@@ -120,8 +145,7 @@ class BaseSchemaValidator:
             raise SchemaSetupError(f"The OOXML schemas are missing from {self.schemas_dir}")
         self._schemas: dict[Path, lxml.etree.XMLSchema] = {}
 
-        patterns = ["*.xml", "*.rels"]
-        self.xml_files = [f for pattern in patterns for f in self.unpacked_dir.rglob(pattern)]
+        self.xml_files = [f for pattern in _XML_GLOBS for f in self.unpacked_dir.rglob(pattern)]
 
         if not self.xml_files:
             print(f"Warning: No XML files found in {self.unpacked_dir}")
@@ -406,9 +430,8 @@ class BaseSchemaValidator:
                 xml_root = lxml.etree.parse(str(xml_file)).getroot()
 
                 r_ns = self.OFFICE_RELATIONSHIPS_NAMESPACE
-                rid_attrs_to_check = ["id", "embed", "link"]
                 for elem in xml_root.iter():
-                    for attr_name in rid_attrs_to_check:
+                    for attr_name in _RELATIONSHIP_ID_ATTRIBUTES:
                         rid_attr = elem.get(f"{{{r_ns}}}{attr_name}")
                         if not rid_attr:
                             continue
@@ -494,28 +517,6 @@ class BaseSchemaValidator:
                 if extension is not None:
                     declared_extensions.add(extension.lower())
 
-            declarable_roots = {
-                "sld",
-                "sldLayout",
-                "sldMaster",
-                "presentation",
-                "document",
-                "workbook",
-                "worksheet",
-                "theme",
-            }
-
-            media_extensions = {
-                "png": "image/png",
-                "jpg": "image/jpeg",
-                "jpeg": "image/jpeg",
-                "gif": "image/gif",
-                "bmp": "image/bmp",
-                "tiff": "image/tiff",
-                "wmf": "image/x-wmf",
-                "emf": "image/x-emf",
-            }
-
             all_files = list(self.unpacked_dir.rglob("*"))
             all_files = [f for f in all_files if f.is_file()]
 
@@ -529,7 +530,7 @@ class BaseSchemaValidator:
                     root_tag = lxml.etree.parse(str(xml_file)).getroot().tag
                     root_name = root_tag.split("}")[-1] if "}" in root_tag else root_tag
 
-                    if root_name in declarable_roots and path_str not in declared_parts:
+                    if root_name in _DECLARABLE_ROOTS and path_str not in declared_parts:
                         errors.append(f"  {path_str}: File with <{root_name}> root not declared in [Content_Types].xml")
 
                 except Exception:  # noqa: BLE001, S112  # an unreadable file is skipped
@@ -545,10 +546,10 @@ class BaseSchemaValidator:
 
                 extension = file_path.suffix.lstrip(".").lower()
                 if extension and extension not in declared_extensions:
-                    if extension in media_extensions:
+                    if extension in _MEDIA_EXTENSIONS:
                         relative_path = file_path.relative_to(self.unpacked_dir)
                         errors.append(
-                            f'  {relative_path}: File with extension \'{extension}\' not declared in [Content_Types].xml - should add: <Default Extension="{extension}" ContentType="{media_extensions[extension]}"/>',
+                            f'  {relative_path}: File with extension \'{extension}\' not declared in [Content_Types].xml - should add: <Default Extension="{extension}" ContentType="{_MEDIA_EXTENSIONS[extension]}"/>',
                         )
 
         except Exception as e:  # noqa: BLE001  # any failure is reported as a validation error

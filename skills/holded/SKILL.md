@@ -16,7 +16,7 @@ The action names below are the v2 API's, loaded by a key starting `pat_`. A lega
 holded --help                         # list all actions
 holded list_contacts --help           # show parameters for an action
 holded list_contacts --json '{"limit": 100}'
-holded create_an_invoice --json '{"contact_id": "abc123", "items": [...]}'
+holded create_an_invoice --json '{"contact_id": "<id from list_contacts>", "items": [{"name": "Consulting", "units": 1, "price": 100, "taxes": ["s_iva_21"]}]}'
 ```
 
 ## Notes

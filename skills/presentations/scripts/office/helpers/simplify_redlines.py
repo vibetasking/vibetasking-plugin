@@ -4,7 +4,7 @@ from pathlib import Path
 
 import defusedxml.minidom
 
-WORD_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+_WORD_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 
 
 def simplify_redlines(input_dir: str) -> tuple[int, str]:
@@ -118,8 +118,8 @@ def get_tracked_change_authors(doc_xml_path: Path) -> dict[str, int]:
     except ET.ParseError:
         return {}
 
-    namespaces = {"w": WORD_NS}
-    author_attr = f"{{{WORD_NS}}}author"
+    namespaces = {"w": _WORD_NS}
+    author_attr = f"{{{_WORD_NS}}}author"
 
     authors: dict[str, int] = {}
     for tag in ["ins", "del"]:
@@ -140,8 +140,8 @@ def _get_authors_from_docx(docx_path: Path) -> dict[str, int]:
                 tree = ET.parse(f)
                 root = tree.getroot()
 
-                namespaces = {"w": WORD_NS}
-                author_attr = f"{{{WORD_NS}}}author"
+                namespaces = {"w": _WORD_NS}
+                author_attr = f"{{{_WORD_NS}}}author"
 
                 authors: dict[str, int] = {}
                 for tag in ["ins", "del"]:

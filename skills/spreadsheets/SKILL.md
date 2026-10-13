@@ -13,7 +13,7 @@ description: Excel/Google Sheets best practices, data verification, batch workfl
 excel --help                                # list all actions
 excel create_excel_workbook --help          # show parameters for an action
 excel create_excel_workbook --json '{"filepath": "report.xlsx"}'
-excel write_data_to_excel --json '{"filepath": "report.xlsx", "sheet_name": "Sheet1", "data": [...], "start_cell": "A1"}'
+excel write_data_to_excel --json '{"filepath": "report.xlsx", "sheet_name": "Sheet1", "data": [["Name", "Qty"], ["Ada", 3]], "start_cell": "A1"}'
 ```
 
 - `excel create_excel_workbook` also creates Sheet1. Never call `excel create_excel_worksheet` unless you need an additional one.

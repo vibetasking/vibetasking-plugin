@@ -141,7 +141,7 @@ tesseract pre.png out --psm 6 && cat out.txt
 - **Bridge two stills**: Pass `first_frame` and `last_frame` to `generate_video` to generate the motion between a starting and ending image, complete with audio. The same image as both gives a loop.
 - **Keep a subject consistent**: Pass `reference_images` of a person, character, or product and name each one in the prompt as `<IMAGE_REF_N>`.
 - **Image to video**: Generate an image with `banana generate_image`, then animate it with `omni generate_video` and `first_frame`.
-- **Transcribe + plan**: Extract the audio (`ffmpeg -i video.mp4 -vn -c:a libmp3lame -q:a 4 audio.mp3`), transcribe it with `speech speech_to_text` (see the speech skill), then use the transcript to decide where to extract frames or how to extend the scene.
+- **Transcribe + plan**: Extract the audio (`ffmpeg -i video.mp4 -vn -c:a libmp3lame -q:a 4 audio.mp3`), transcribe it with `speech to_text` (see the speech skill), then use the transcript to decide where to extract frames or how to extend the scene.
 - **Presentation to video**: Create slides with the presentations skill, convert to images, then animate each slide into a video clip.
 - **Add a soundtrack**: Generate a track with `lyria generate_music` (see the music skill for the timed-structure prompt and the ffmpeg mux), then mux it under the clip with `-shortest`.
 

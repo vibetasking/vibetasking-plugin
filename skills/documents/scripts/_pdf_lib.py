@@ -121,7 +121,7 @@ MEASURE_PAGES_JS = r"""
 
     const minH_px = (cs.minHeight && cs.minHeight !== 'auto') ? parseFloat(cs.minHeight) : 0;
     if (minH_px < PAGE_LIKE_MIN_PX) return;
-    if (el.scrollHeight <= minH_px + 5) return; // fits — would be fine as a page
+    if (el.scrollHeight <= minH_px + 5) return; // fits, so it would be fine as a page
 
     fakePages.push({
       selector: describe(el),

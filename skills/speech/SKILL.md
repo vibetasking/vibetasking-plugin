@@ -22,6 +22,7 @@ The text is read verbatim, in the language it is written in. Direction goes else
 Voice selection:
 - Prebuilt voices work in every language: `Kore` (firm, the default), `Puck` (upbeat), `Charon` (informative), `Aoede` (breezy), `Zephyr` (bright), `Sulafat` (warm), `Achird` (friendly), `Gacrux` (mature), `Schedar` (even), and more.
 - For a native accent, list the voice library by language and pick an id: `speech list_voices --json '{"language": "es-ES"}'`. Filter by `gender` or `search` ("narrator", "warm", "news") to narrow it. Use the voice's id as `voice`.
+- Where this workspace's speech runs on the prebuilt voices alone, `list_voices` lists only those, and a `style` such as "with a Castilian Spanish accent" asks one for an accent.
 - Keep one voice per character across a piece. Change the voice, not the `style`, to change age, gender or accent.
 
 Formats:
@@ -42,7 +43,7 @@ Two speakers at most, each on a prebuilt voice. Each turn may carry its own `sty
 ### Speech to text
 
 ```bash
-speech speech_to_text --json '{"source_audio": "uploads/meeting.mp3"}'
+speech to_text --json '{"source_audio": "uploads/meeting.mp3"}'
 ```
 
 The transcript comes back diarized: one line per speaker turn, each prefixed with the speaker label and its
@@ -55,12 +56,12 @@ Splitting large audio:
 ffmpeg -hide_banner -loglevel error -i long.mp3 -f segment -segment_time 600 -c copy part_%03d.mp3
 ```
 
-Then call `speech speech_to_text` on each part and concatenate the transcripts.
+Then call `speech to_text` on each part and concatenate the transcripts.
 
 ## Workflows
 
 - **Voice reply**: compose a reply with the agent, call `speech text_to_speech` to produce an audio file, then deliver it in your reply or attached to a message to the user.
-- **Meeting transcript**: user uploads a recording → `speech speech_to_text` → summarize/structure the transcript → write to a document with the documents skill.
-- **Dubbing / localization**: `speech speech_to_text` (with `language`) → translate the transcript → `speech list_voices` for the target language → `speech text_to_speech` with that voice.
+- **Meeting transcript**: user uploads a recording → `speech to_text` → summarize/structure the transcript → write to a document with the documents skill.
+- **Dubbing / localization**: `speech to_text` (with `language`) → translate the transcript → `speech list_voices` for the target language → `speech text_to_speech` with that voice.
 - **Video narration**: draft the script, `speech text_to_speech` → combine with visuals using the video skill (`ffmpeg -i video.mp4 -i narration.mp3 -c:v copy -c:a aac -shortest out.mp4`).
 - **Voice memo intake**: user sends a voice note → transcribe → act on the content (create todos, draft email, fill a form).

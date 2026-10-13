@@ -6,8 +6,8 @@ This plugin connects your AI assistant to your VibeTasking account and teaches i
 
 ## What it contains
 
-- **The VibeTasking connector.** A remote MCP server at `https://api.vibetasking.com/mcp`. You sign in with your VibeTasking account the first time the assistant uses it, and you choose which workspace and permissions the connection gets. Every call acts on your account through that grant, and you can revoke it at any time from your API keys in the app.
-- **Skills.** The `vibetasking` skill is the operating guide: the mental model, where to start, and one companion file per area (runs, agents, configuration, wiring, runtime, delegating, data, building, operations, brain, external agents). The other skills cover the toolkits the platform runs for you, such as documents, spreadsheets, presentations, Gmail, Slack and Google Drive.
+- **The VibeTasking connector.** A remote MCP server at `https://api.vibetasking.com/mcp/anthropic`. You sign in with your VibeTasking account the first time the assistant uses it, and you choose which workspace and permissions the connection gets. Every call acts on your account through that grant, and you can revoke it at any time from your API keys in the app.
+- **Skills.** The `vibetasking` skill is the operating guide: the mental model, where to start, and one companion file per area (runs, agents, configuration, wiring, runtime, delegating, data, building, operations, knowledge). The other skills cover the toolkits the platform runs for you, such as documents, spreadsheets, presentations, Gmail, Slack and Google Drive.
 
 ## Install
 

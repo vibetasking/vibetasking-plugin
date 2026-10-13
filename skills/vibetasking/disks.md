@@ -1,0 +1,48 @@
+# Named disks
+
+Named disks are the workspace's own folders of files, which the app calls Knowledge: documents, notes and pages that people and agents read with the same file tools they use for everything else. `get_workspace` answers ``disks``, whether they are on. Off, there is nothing to read and no curator works: say that named disks are off and that an owner turns them on in the workspace's settings, or with `update_workspace` and ``disks`` true (an owner's call, never a run's).
+
+## Making one
+
+`create_disk` with a ``name``, one folder name unique in the workspace, and a ``description`` of what it holds, which every run that mounts it reads. With ``private`` true, the default, it is yours: you and the workspace's owners and admins read and write it until you share it. With ``private`` false it is the whole workspace's, and every member reads and writes it. Nothing exists until someone makes one.
+
+## Sharing it
+
+- **With people**: `create_grant` on the disk (``VIEWER`` reads it, ``EDITOR`` writes it too).
+- **With the whole workspace**: `create_mount` with no target, the disk's ``disk_id``, ``path`` its own folder ``disks/<name>/`` and ``mode`` ``WRITE``, which an admin makes. Every member reads it then, members who join later included, and each writes it as far as their own rights reach.
+- **With an agent's runs**: an agent's run, whoever starts it, reads a named disk only when `create_mount` attaches it to that agent, ``agent_id`` set and ``path`` the disk's folder. ``mode`` ``READ`` keeps every run of the agent to reading it. ``mode`` ``WRITE`` lets a run a person starts write it as far as that person may, while a conversation nobody starts (a channel, a trigger nobody owns) still only reads it. `update_mount` changes the mode and `delete_mount` detaches it. Whoever reads that agent reads the disk then, so its member or an admin attaches a private disk, and anyone attaches one of the whole workspace's or one shared with it, only where the agent's work needs what the disk holds. Stopping a workspace share takes off what others attached while it lasted.
+
+**From your run** each named disk your person reaches is a folder ``disks/<name>/`` of your sandbox: their own, the workspace's, the ones shared with them and the ones shared with the workspace, writable where they may write. An agent's run holds only the disks attached to its agent. Your instructions list each with its name, its description and whether you may write it, and when it holds an ``index.md``, the map of what it holds, read that before you work with the disk. **Over the MCP** a named disk is a disk: `list_disks` with ``named`` true, then `list_files`, `get_file`, `create_file` and `update_file` on it.
+
+## Finding what they hold
+
+`search_workspace` with the question in ``q`` answers the files whose text answers it, ranked by its words, its meaning and the part or fault codes it names, best first, each with its passages that matched and the pages they span. Documents, scans, images, audio and video are searched too: their text, what a picture shows, what a recording says and what a video shows, are read for you, and a recording's passage names the seconds it spans (``second``, ``second_end``). Open the file there rather than reading every disk: `file_read` with ``pages`` on a PDF of your sandbox, or with ``seconds`` on a recording, or `get_file` over the MCP. From a run it searches the files of the disks your run mounts, and ``decide`` true keeps only the passages the Decisions step judges answer the question, billed to your run. Over the MCP it searches the files of the disks your person's Coordinator would mount, without ``decide``. Your person's own key and their Coordinator also search the instructions of every agent and preset the person reads: ``type`` ``AGENT,PRESET`` keeps to them, each match naming its ``agent_id`` or ``preset_id`` and its ``name``. When the files are in another language or vocabulary than the question, search again with the question in their words: the part code as printed, the unit's name as the manual names it. An agent's instructions name `search_workspace` with no toolkit: each run is told which one holds it, `vibetasking` on a run someone starts and `platform` on a conversation nobody starts (a channel, a trigger nobody owns).
+
+Answer from the files, and cite every one you used as a mention whose id is its ``file_id``: ``@[Shipping days](ref:file:<file_id>)``, with ``:<page>`` after the id for a page of a PDF: ``@[Manual, p. 41](ref:file:<file_id>:41)``, or ``@<second>`` for a moment of a recording: ``@[Kickoff call, 12:34](ref:file:<file_id>@754)``. The mention opens the file in the app, at that page or that moment. Say so when the files do not cover the question rather than filling the gap.
+
+## Teaching it
+
+When the person tells you something worth keeping ("we ship on Tuesdays"), write it where it belongs, with their authority:
+
+- Find the page through the disk's ``index.md`` when it has one, and add a page under ``pages/`` only when none fits, linking it from ``index.md``.
+- Choose the disk by what it is for and who reads it. What the person keeps for themselves goes to a disk only they read. Never copy one person's notes into a disk others read without asking them. When no disk fits, offer to make one rather than forcing it into another.
+- Every claim cites where it came from, keeps its hedge and says who stated it: "Ana said on 3 October that we ship on Tuesdays", the conversation cited as ``@[title](ref:run:<id>)``, a document or another page as a link relative to the page (``../sources/contract.pdf``), a web page by its URL.
+- While a disk's curator works, a run never writes its ``sources/``, ``index.md`` or ``log.md``: a document the person wants the disk to learn from, they add to it on the Knowledge page, and adding or replacing it wakes the curator.
+
+## Each disk's curator
+
+A named disk may have a **curator** that keeps it consistent and up to date: it reads the disk's documents and the sources it is set up with, writes the pages, ``index.md`` and ``log.md``, and raises insights about what the disk holds. A disk has none until someone turns it on: `update_disk` with ``curator`` true, its member or an admin, or anyone who writes one of the whole workspace's, while named disks are on. ``curator`` false stops it and keeps its settings and sources for when it is on again. It is an agent of ``variant`` ``CURATOR``, owned by the disk's member or, for a disk of the whole workspace, by whoever turned it on, its ``disk_id`` the disk, which `list_agents` with ``disk_id`` finds. It acts as its owner and reads only its disk and the workspace's agents, and it never changes an automation. The app shows it inside its disk, never as an agent, so speak of it as "the disk's curator" or "the disk's sources", never as an agent of theirs.
+
+While it works the disk has its layout: ``sources/`` holds the documents people added, as they added them, which no run changes, the curator's included, ``pages/`` one page per subject (a customer, a product, a process, a person, a decision), ``index.md`` the short map of the disk, and ``log.md`` what the curator read and changed. Only the curator's runs change ``index.md`` and ``log.md``, while people change anything on the Knowledge page.
+
+It wakes when someone adds or replaces documents in the disk's ``sources/``, when one of its sources fires, and on `start_curator` with the disk's ``disk_id`` to read the disk again.
+
+Its **sources** are its triggers, which its owner or an admin sets up:
+
+- **A web topic**: `create_trigger` on the curator with a ``cron`` (and a ``timezone``) for the cadence and a ``prompt`` saying what to research and which pages it informs ("Research EU AI Act guidance that affects SMEs and update the relevant pages"). A source runs at most hourly, so its ``cron`` names one minute of the hour.
+- **A tool source**: link the integration to the curator with `add_agent_integration`, which is the person's consent to its reads, then `create_trigger` with the ``cron``, the ``integration_id`` and a ``prompt`` saying what to read each time ("New documents in the Sales folder since the last check").
+- `update_trigger` changes a source's cadence or prompt, ``enabled`` false pauses it, and `delete_trigger` removes it.
+
+Its **insights** are about its disk: ``CONTRADICTION`` (two of its documents disagree), ``RISK``, ``OPPORTUNITY``, ``RECOMMENDATION``, ``AUTOMATION`` (work an agent could take over, weighed against the agents that exist) and ``PROMPT`` (an agent the disk is attached to whose instructions contradict it). They reach the disk's member and those it is shared with to edit. When the person wants fewer, set ``insights`` in the curator's ``config`` with `update_agent` to the types to keep, an empty list for none, so it only keeps the pages.
+
+The curator's own instructions (its ``prompt``) are its owner's or an admin's to change. A curator goes only with its disk, through `delete_disk`.

@@ -67,7 +67,7 @@ demands.
 banana generate_image --json '{"prompt": "Abstract dark blue gradient, subtle geometric patterns", "path": "bg.jpg", "aspect_ratio": "16:9", "resolution": "2K"}'
 
 # Stock photos
-image_search image_search --json '{"query": "modern office teamwork", "num": 5}'
+image_search image_search --json '{"query": "modern office teamwork", "count": 5}'
 
 # Download a found image locally
 curl -L -o "photo.jpg" "https://example.com/image.jpg"
