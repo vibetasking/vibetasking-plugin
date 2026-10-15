@@ -28,7 +28,7 @@ The VibeTasking Browser extension, installed from the Chrome Web Store, does thr
 
 ## Taking over a conversation
 
-A channel conversation's composer carries an **Agent** and **You** switch. **You** takes the conversation over: the agent pauses, and what the person sends goes to the contact through the channel. **Agent** hands it back. The channel's ``operator_timeout`` hands it back on its own after a stretch with no reply from the team, and the ``OPERATOR`` notification setting tells the person when a contact writes in a conversation they hold (see **Notifications** in `operations.md`). The switch is the app's side of ``dispatch_human`` (see **Talking to people** in `runtime.md`). On a channel with ``silent_handoff`` on the switch is unavailable, since its people reply from the account itself.
+A channel conversation's composer carries an **Agent** and **You** switch. **You** takes the conversation over: the agent pauses, and what the person sends goes to the contact through the channel. **Agent** hands it back. The channel's ``operator_timeout`` hands it back on its own after a stretch with no reply from the team, and the ``OPERATOR`` notification setting tells the person when a contact writes in a conversation they hold (see **Notifications** in `operations.md`). The switch is the app's side of ``dispatch_human`` (see **Talking to people** in `runtime.md`). Over the API the same move is `update_run`'s ``hold``: ``OPERATOR`` takes the conversation over and ``null`` hands it back, neither sending a message, from a person's key and never from a run's own. On a channel with ``silent_handoff`` on the switch is unavailable, since its people reply from the account itself.
 
 ## Learning the platform
 
