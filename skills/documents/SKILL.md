@@ -1,6 +1,7 @@
 ---
 name: documents
-description: PDF generation and Word document styling
+description: PDF generation and Word document styling, plus reading, merging and filling
+  existing PDFs and redlining existing Word files
 ---
 
 # Documents (PrettyDocsToolkit, WordOfficeToolkit)
@@ -71,6 +72,19 @@ text arguments: use the `style` argument, or `word format_text` for
 existing paragraphs. The `color` argument is a hex code without the
 "#" prefix.
 
+### Changing a document someone sent
+
+The `word` actions build and style a document. To change one that already
+exists while keeping its formatting, or to redline it with tracked changes,
+add comments or accept changes, work on its XML with the guide at
+`system/skills/documents/rules/docx/docx.md`. Its `scripts/` paths are
+relative to `system/skills/documents/rules/docx/`, so a call reads
+`python system/skills/documents/rules/docx/scripts/merge_runs.py unpacked/`.
+The `docx` npm package it creates documents with is not preinstalled here:
+install it in the project folder (`npm install docx`) before a script
+requires it. The guide lives only inside a run, so a reader outside one
+does not have it.
+
 ## Style decisions are yours
 
 Long documents, dense tables, image-heavy designs, minimalist
@@ -104,6 +118,13 @@ python system/skills/documents/scripts/optimize_pdf.py path/to.pdf
 
 Same cascade as `html_to_pdf` uses: pymupdf clean, then ghostscript at
 progressively more aggressive presets, capped at 20 MB.
+
+To read, merge, split, rotate or OCR one, or fill its form (fillable or
+not), read `system/skills/documents/rules/pdf/pdf.md`, and `forms.md` beside
+it for a form. Its `scripts/` paths are relative to
+`system/skills/documents/rules/pdf/`. A PDF you create still goes through
+`html_to_pdf` above, never reportlab. Like the Word guide, it lives only
+inside a run.
 
 ---
 

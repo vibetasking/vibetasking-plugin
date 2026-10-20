@@ -67,6 +67,8 @@ libreoffice --headless --convert-to xlsx --outdir recalculated file.xlsx
 - Verify computed values by reading the recalculated copy with openpyxl `data_only=True`. Remember `excel read_data_from_excel` returns formula strings, so it cannot do this.
 - Scan the recalculated values for `#DIV/0!`, `#REF!`, `#VALUE!`, `#N/A`, and `#NAME?`. Deliver with zero formula errors.
 
+Inside a run, `python system/skills/spreadsheets/rules/scripts/recalc.py file.xlsx` does both in one step: it recalculates the file in place and answers JSON with `total_errors` and the cells holding each error type. Trust `total_errors` over the cell list, which stops at a hundred per type. Before building a financial model, or choosing formulas the recalculation must evaluate (LibreOffice cannot evaluate `XLOOKUP`, `FILTER` or the other spilling functions), read `system/skills/spreadsheets/rules/xlsx.md`. Its `scripts/` paths are relative to `system/skills/spreadsheets/rules/`.
+
 ## Messy data
 
 Real-world data is messy. It's often ill-structured, with errors, or just plain wrong.

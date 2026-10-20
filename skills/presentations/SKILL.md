@@ -97,25 +97,25 @@ graphics, entrance effects, data visualizations as video).
 the images in a `.pptx`. Slides become pixel-perfect images, which
 means: the PPTX is not editable as text. Always QA the PDF first.
 If text editability matters, ship the PDF, or build the deck natively
-with PptxGenJS (`npm install pptxgenjs`) instead of the HTML pipeline:
-see `system/skills/presentations/pptxgenjs.md`.
+with PptxGenJS instead of the HTML pipeline.
 
-## Editing existing PPTX files
+## Native and edited PowerPoint files
 
-```bash
-# Analyze
-python -m markitdown presentation.pptx              # text extract
-python system/skills/presentations/scripts/thumbnail.py presentation.pptx   # visual overview
+Building a deck natively with PptxGenJS, editing an existing deck or
+filling a template follows the guide at
+`system/skills/presentations/rules/pptx.md`: its pptxgenjs gotchas, the
+unzip, edit and zip workflow, the slide scripts and the validator. Inside
+a run:
 
-# Unpack -> manipulate slide XML -> clean -> pack
-python system/skills/presentations/scripts/office/unpack.py presentation.pptx unpacked/
-# (edit slide XML in unpacked/ppt/slides/)
-python system/skills/presentations/scripts/clean.py unpacked/
-python system/skills/presentations/scripts/office/pack.py unpacked/ output.pptx
-```
+- Its `scripts/` paths are relative to `system/skills/presentations/rules/`,
+  so a call reads
+  `python system/skills/presentations/rules/scripts/thumbnail.py deck.pptx deck-thumbs`.
+- `pptxgenjs`, `react-icons`, `react`, `react-dom` and `sharp` are not
+  preinstalled here, whatever the guide says. Install them in the project
+  folder, next to the script that requires them (`npm install pptxgenjs`).
+  The sandbox's system directories are read only, so a global install fails.
 
-See `system/skills/presentations/editing.md` for the template workflow,
-the scripts and the formatting rules.
+The guide lives only inside a run, so a reader outside one does not have it.
 
 ## Dependencies (sandbox-provided)
 
@@ -124,6 +124,7 @@ the scripts and the formatting rules.
 - `python-pptx`, Playwright: HTML→PPTX conversion
 - LibreOffice (`soffice`): PPTX→PDF when needed
 - Poppler (`pdftoppm`), `markitdown`: extraction and fallback rendering
+- `defusedxml`, `lxml`: the slide scripts and the validator
 
 ## Reference
 
@@ -134,62 +135,7 @@ units, and the full list of what is enforced vs suggested:
 ---
 
 Companion files, each in this skill's folder beside this file:
-- editing.md
-- pptxgenjs.md
-- scripts/__init__.py
-- scripts/add_slide.py
-- scripts/clean.py
 - scripts/html_to_pptx.py
-- scripts/office/helpers/__init__.py
-- scripts/office/helpers/merge_runs.py
-- scripts/office/helpers/simplify_redlines.py
-- scripts/office/pack.py
-- scripts/office/schemas/ECMA-NOTICE.txt
-- scripts/office/schemas/ISO-IEC29500-4_2016/dml-chart.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/dml-chartDrawing.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/dml-diagram.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/dml-lockedCanvas.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/dml-main.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/dml-picture.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/dml-spreadsheetDrawing.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/dml-wordprocessingDrawing.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/pml.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/shared-additionalCharacteristics.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/shared-bibliography.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/shared-commonSimpleTypes.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/shared-customXmlDataProperties.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/shared-customXmlSchemaProperties.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesCustom.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesExtended.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/shared-documentPropertiesVariantTypes.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/shared-math.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/shared-relationshipReference.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/sml.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/vml-main.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/vml-officeDrawing.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/vml-presentationDrawing.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/vml-spreadsheetDrawing.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/vml-wordprocessingDrawing.xsd
-- scripts/office/schemas/ISO-IEC29500-4_2016/wml.xsd
-- scripts/office/schemas/SOURCES.md
-- scripts/office/schemas/ecma/fouth-edition/opc-contentTypes.xsd
-- scripts/office/schemas/ecma/fouth-edition/opc-coreProperties.xsd
-- scripts/office/schemas/ecma/fouth-edition/opc-digSig.xsd
-- scripts/office/schemas/ecma/fouth-edition/opc-relationships.xsd
-- scripts/office/schemas/external/dc.xsd
-- scripts/office/schemas/external/dcmitype.xsd
-- scripts/office/schemas/external/dcterms.xsd
-- scripts/office/schemas/external/xml.xsd
-- scripts/office/soffice.py
-- scripts/office/unpack.py
-- scripts/office/validate.py
-- scripts/office/validators/__init__.py
-- scripts/office/validators/base.py
-- scripts/office/validators/docx.py
-- scripts/office/validators/pptx.py
-- scripts/office/validators/redlining.py
-- scripts/parts.py
-- scripts/thumbnail.py
 - slides.md
 
 A ``system/skills/<skill>/<file>`` path cited above names ``<file>`` in the ``<skill>`` folder of this plugin's skills, next to this skill's own folder.

@@ -23,12 +23,16 @@ The VibeTasking Browser extension, installed from the Chrome Web Store, does thr
 
 ## Talking instead of typing
 
-- **Dictate** in the composer types what the person says into the message as they speak, in any conversation, unless the workspace's policy turns it off.
+- **Dictate** in the composer types what the person says into the message as they speak, in any conversation, while the workspace's dictation runs on a provider it has switched on.
 - **Talk with the Coordinator**, where Send sits in an empty composer of a conversation with their Coordinator, starts a voice conversation: what they say reaches the Coordinator, and what it tells them is spoken back. The voice it speaks with is set in the app's settings, under Coordinator.
 
 ## Taking over a conversation
 
 A channel conversation's composer carries an **Agent** and **You** switch. **You** takes the conversation over: the agent pauses, and what the person sends goes to the contact through the channel. **Agent** hands it back. The channel's ``operator_timeout`` hands it back on its own after a stretch with no reply from the team, and the ``OPERATOR`` notification setting tells the person when a contact writes in a conversation they hold (see **Notifications** in `operations.md`). The switch is the app's side of ``dispatch_human`` (see **Talking to people** in `runtime.md`). Over the API the same move is `update_run`'s ``hold``: ``OPERATOR`` takes the conversation over and ``null`` hands it back, neither sending a message, from a person's key and never from a run's own. On a channel with ``silent_handoff`` on the switch is unavailable, since its people reply from the account itself.
+
+## The workspace's AI providers
+
+The app's settings hold, under **AI providers**, what the workspace's AI runs on: its providers (its Claude Code or ChatGPT subscription, its own API accounts such as an OpenAI or Anthropic key, an Azure, Bedrock or Vertex tenancy or a server of its own, each checked with its provider before it is saved, and the platform's, each with a switch only an owner turns), and what each purpose runs on, Automatic being the platform's own configuration. Connecting an account offers to use it for every purpose it serves. An owner or admin who manages credentials sets them up there. `get_purposes` and `list_accounts` read the same (see **Where the workspace's AI runs** in `configuration.md`).
 
 ## Learning the platform
 
