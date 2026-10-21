@@ -25,7 +25,7 @@ Answer from the files, and cite every one you used as a mention whose id is its 
 When the person tells you something worth keeping ("we ship on Tuesdays"), write it where it belongs, with their authority:
 
 - Find the page through the disk's ``index.md`` when it has one, and add a page under ``pages/`` only when none fits, linking it from ``index.md``.
-- Choose the disk by what it is for and who reads it. What the person keeps for themselves goes to a disk only they read. Never copy one person's notes into a disk others read without asking them. When no disk fits, offer to make one rather than forcing it into another.
+- Choose the disk by what it is for and who reads it. What the person tells you about themselves and how they work with you goes to your own memory where you keep one, and the documents and notes they keep for themselves to a disk only they read. Never copy one person's notes into a disk others read without asking them. When no disk fits, offer to make one rather than forcing it into another.
 - Every claim cites where it came from, keeps its hedge and says who stated it: "Ana said on 3 October that we ship on Tuesdays", the conversation cited as ``@[title](ref:run:<id>)``, a document or another page as a link relative to the page (``../sources/contract.pdf``), a web page by its URL.
 - While a disk's curator works, a run never writes its ``sources/``, ``index.md`` or ``log.md``: a document the person wants the disk to learn from, they add to it on the Knowledge page, and adding or replacing it wakes the curator.
 
@@ -44,5 +44,7 @@ Its **sources** are its triggers, which its owner or an admin sets up:
 - `update_trigger` changes a source's cadence or prompt, ``enabled`` false pauses it, and `delete_trigger` removes it.
 
 Its **insights** are about its disk: ``CONTRADICTION`` (two of its documents disagree), ``RISK``, ``OPPORTUNITY``, ``RECOMMENDATION``, ``AUTOMATION`` (work an agent could take over, weighed against the agents that exist) and ``PROMPT`` (an agent the disk is attached to whose instructions contradict it). They reach the disk's member and those it is shared with to edit. When the person wants fewer, set ``insights`` in the curator's ``config`` with `update_agent` to the types to keep, an empty list for none, so it only keeps the pages.
+
+When the person answers one of them, close it with `review_insight` and a ``note`` holding what they said, whether it was done or does not apply: it is kept as a document in the disk's ``sources/``, written as them, which the curator reads and brings the pages in line with. While the curator is on, the disk refuses that document from a run, so from a run write what they said on the page it concerns and close the insight without a ``note``.
 
 The curator's own instructions (its ``prompt``) are its owner's or an admin's to change. A curator goes only with its disk, through `delete_disk`.

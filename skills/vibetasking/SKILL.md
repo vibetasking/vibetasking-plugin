@@ -52,7 +52,7 @@ A file whose area needs a fact about the account says so: skip it while the fact
 - `delegating.md`: calling a toolkit tool directly versus delegating to a run, operating an asset by type, and choosing the delegation target.
 - `data.md`: reading resources (paging, filters, expanding), merges and errors, and reaching a database asset's own project.
 - `building.md`: the build and iterate loop, the field rules, packages, writing agent prompts, fixing a misbehaving agent, routing agents and triggers.
-- `operations.md`: secrets and the Vault, triage and the inbox, notifications, webhooks, API keys, billing (plans and payment need the OWNER role, credits an ADMIN) and referrals, removing what was connected, workspace members, the company record, sharing, partner tools (a partner membership), conventions and worked examples.
+- `operations.md`: secrets and the Vault, triage and the inbox, notifications, webhooks, API keys, billing (plans and payment need the OWNER role, credits an ADMIN) and referrals, removing what was connected, workspace members, a demo workspace's company record and the connect pages' branding, sharing, partner tools (a partner membership), conventions and worked examples.
 - `disks.md`: named disks (what the app calls Knowledge), making and sharing them, attaching them to agents to read or write, searching their files and citing them, teaching them, and turning on each disk's curator.
 - `app.md`: what a person does in the app and in the Chrome extension with no operation behind it: recording a task to show how it is done, the extension, dictating and talking with the Coordinator, taking over a channel conversation, the workspace's AI providers, and the Academy.
 
