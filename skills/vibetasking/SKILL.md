@@ -25,7 +25,7 @@ Reading rules that hold in every file:
 - A name in single backticks (`create_run`, `list_agents`) is a platform operation: the MCP tool of that name, or `vibetasking <name>` from a run's shell. None of them is a tool of your own runtime.
 - A name in double backticks (``shell_exec``, ``message_user``, ``create_run``) is a tool a run's agent holds, or a field or a value, named to describe that run from the outside.
 - Where a file describes what a run's agent has and does, it describes a run from the outside. When you are yourself a run, the rest of your instructions describe what *you* have, and they win wherever the two differ.
-- Where the two surfaces differ, the sentence says so in place, naming them "over the MCP" and "from a run". Seven things differ: how a file gets into or out of an entity, how a toolkit tool is called without a run, what delegating to a run buys, how a channel connection or a credential is requested from the user, where a skill's companion script lands, where a parameter contract lives, and how a run you start tells you it settled.
+- Where the two surfaces differ, the sentence says so in place, naming them "over the MCP" and "from a run". Eight things differ: how a file gets into or out of an entity, how a toolkit tool is called without a run, what delegating to a run buys, how a channel connection or a credential is requested from the user, where a skill's companion script lands, where a parameter contract lives, how a run you start tells you it settled, and whether you can start a supervision run.
 
 ## Where to start
 
@@ -51,7 +51,7 @@ A file whose area needs a fact about the account says so: skip it while the fact
 - `runtime.md`: how the agent executes inside a run, needed to read a trace and to write prompts in the runtime's own terms.
 - `delegating.md`: calling a toolkit tool directly versus delegating to a run, operating an asset by type, and choosing the delegation target.
 - `data.md`: reading resources (paging, filters, expanding), merges and errors, and reaching a database asset's own project.
-- `building.md`: the build and iterate loop, the field rules, packages, writing agent prompts, fixing a misbehaving agent, routing agents and triggers.
+- `building.md`: the build and iterate loop, watching what runs (cases, standing approvals, a supervisor), the field rules, packages, writing agent prompts, fixing a misbehaving agent, routing agents and triggers.
 - `operations.md`: secrets and the Vault, triage and the inbox, notifications, webhooks, API keys, billing (plans and payment need the OWNER role, credits an ADMIN) and referrals, removing what was connected, workspace members, a demo workspace's company record and the connect pages' branding, sharing, partner tools (a partner membership), conventions and worked examples.
 - `disks.md`: named disks (what the app calls Knowledge), making and sharing them, attaching them to agents to read or write, searching their files and citing them, teaching them, and turning on each disk's curator.
 - `app.md`: what a person does in the app and in the Chrome extension with no operation behind it: recording a task to show how it is done, the extension, dictating and talking with the Coordinator, taking over a channel conversation, the workspace's AI providers, and the Academy.

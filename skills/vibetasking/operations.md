@@ -47,7 +47,7 @@ The inbox is only the severity-bearing subset of the activities, the platform's 
 
 Everything runs on workspace credits: one credit is one cent ($0.01) of value.
 
-**Plan and balance.** `get_billing` is the authoritative answer to "what plan is this workspace on" and "how many credits are left": the effective plan, account type, payment method, spendable balance (``credit_total``), run concurrency, ``linked`` (the billing account was originated by another workspace), ``shared`` (more than one workspace runs on it, so the plan, balance, and purchases are pooled across all of them), and its auto-recharge under ``recharge``.
+**Plan and balance.** `get_billing` is the authoritative answer to "what plan is this workspace on" and "how many credits are left": the effective plan, account type, payment method, spendable balance (``credit_total``), run concurrency, ``linked`` (the billing account was originated by another workspace), ``shared`` (more than one workspace runs on it, so the plan, balance, and purchases are pooled across all of them), and its auto-recharge under ``recharge``. `get_billing_allowance` answers how much of the billing period's included use of the Coordinator, supervisors and the Knowledge curator is used, as a percent, and when it starts again. Past it they keep working on the balance at a reduced rate.
 
 **The catalog.** `list_plans` lists the subscription plans and the credit packages: each with its price, the credits it includes and, for a plan, the run concurrency it grants. Read it before you name a plan or a price, and pass the ``name`` it returns to `create_checkout_session`.
 
