@@ -84,7 +84,7 @@ approval — see `whatsapp create_template --help` for the component shape.
 - Omit `to`: every send defaults to the run's bound contact (the person
   this conversation is with). On contact-bound runs, an explicit `to`
   addressing anyone else is rejected unless external recipients are
-  enabled in the channel's settings — don't assume it's allowed. Runs
+  enabled in the settings of the channel this conversation is on — don't assume it's allowed. Runs
   with no bound contact must pass `to` explicitly, in E.164 format
   (e.g. `+34600123456`).
 - Meta's 24-hour customer service window gates free-form sends

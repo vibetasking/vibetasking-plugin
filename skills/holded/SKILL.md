@@ -40,7 +40,6 @@ holded create_an_invoice --json '{"contact_id": "<id from list_contacts>", "item
 
 A `403` means the connected API key lacks permission for that operation. Holded words it two ways: `Insufficient permissions: <scope> required` (naming a scope like `accounting:taxes.read`, `accounting:chart-of-accounts.read`, or `inventory:products.read`) or a bare `Access denied.` (common on reads such as contacts, products, and invoices). Either way, retrying the same call will not help. Tell the user to enable the missing permission on the Holded API key and stop.
 
-
 # Holded in the browser (app.holded.com)
 
 For what the API doesn't cover, operate app.holded.com logged in; most of its data
