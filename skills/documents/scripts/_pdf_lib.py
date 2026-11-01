@@ -338,7 +338,7 @@ def _valid_same_pages(path: Path, expected: int | None) -> bool:
 def _flatten_transparency(path: Path, result: OptimizeResult) -> None:
     """Flatten transparency via a PDF-1.3 re-distill (removes Chrome box-shadow/overlay gray boxes on export). No-op without gs."""
 
-    # Why 1.3: see ../reference/html-pdf.md
+    # PDF 1.3 predates transparency, so the re-distill has to flatten it
     tmp_path = _run_pdfwrite(path, compat="1.3", preset="/printer")
     if tmp_path is None:
         return

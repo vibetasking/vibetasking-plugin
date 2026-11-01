@@ -95,6 +95,8 @@ The app's files (uploads, documents, videos) live in its database's storage: a p
 
 ## Calling the VibeTasking API from the app
 
+When an agent should act on what happens in the app (a sign up, a form sent, an order placed), let the app's data start it: a row trigger on the app's SUPABASE asset (``config.event`` ``row_inserted`` and the ``config.table``, ``auth.users`` for sign ups, see **Triggers** in `building.md`) starts the agent on the rows each statement adds with no code in the app. When the event leaves no row, the app's server code calls an inbound webhook trigger's URL.
+
 For app features that start runs or message agents, the app's server code calls the VibeTasking API's ``/v1`` operations (``https://api.vibetasking.com/v1``, reference at ``/docs``, spec at ``/openapi.json``) with an API key. Mint one yourself:
 
 1. `create_key` with the ``workspace_id`` from `get_me`, a ``name`` that says what it is for, and explicit ``scopes``, the narrowest set covering what the app calls (``resource:action`` strings like ``runs:read`` or ``runs:create``, since an unscoped key is refused). Omit ``expires_at`` so the key outlives the run. It still lives with the conversation that made it: canceling or deleting that conversation revokes it, so tell the user. The response carries ``token`` exactly once, and it can never be read again.

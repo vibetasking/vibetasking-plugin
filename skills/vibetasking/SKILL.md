@@ -58,7 +58,7 @@ A file whose area needs a fact about the account says so: skip it while the fact
   - It also covers secrets and the Vault.
   - It also covers billing (plans and payment need the OWNER role, credits an ADMIN), referrals and partner tools (a partner membership).
 - `sites.md`: web apps on a SITE asset, built one way: deploying and editing a site, its server code and secrets, signing people in through the database's auth and its email sender, data and files on the SUPABASE asset, calling the API from the app, and selling with the STRIPE asset.
-- `disks.md`: named disks (what the app calls Knowledge), making and sharing them, attaching them to agents to read or write, searching their files and citing them, teaching them, and turning on each disk's curator.
+- `disks.md`: named disks (what the app calls Knowledge), making and sharing them, attaching them to agents to read or write, searching their files and citing them, teaching them, and the brain and its curator.
 - `app.md`: what a person does in the app and in the Chrome extension with no operation behind it: recording a task to show how it is done, the extension, dictating and talking with the Coordinator, taking over a channel conversation, the workspace's AI providers, and the Academy.
 
 ## First contact and billing
