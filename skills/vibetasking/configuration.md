@@ -8,7 +8,7 @@ The preset's own ``prompt`` is shared instructions applied under every agent tha
 
 Model choice and runtime behaviour live in the ``config`` object that presets, agents, and runs all carry (the same shape on each). The authoritative list of keys, with a description of what each does, is the ``config`` field on the `create_agent`, `create_preset` and `create_run` contracts: the tool schemas over the MCP, the actions' ``vibetasking <action> --help`` from a run. Read it there rather than guessing: an unknown key is rejected outright.
 
-Precedence runs preset → agent → run, last writer wins. A key set on the run's ``config`` overrides the same key on the agent, which overrides the preset, and anything you leave unset falls back to a platform default. ``models`` layers per purpose instead (below). So put shared defaults on the preset and override per-agent (or per-run) only what differs. An `update_agent` or `update_preset` merges its ``config`` key by key, and inside ``models`` purpose by purpose, so send only what you change, and a ``null`` removes it.
+Precedence runs preset → agent → run, last writer wins. A key set on the run's ``config`` overrides the same key on the agent, which overrides the preset, and anything you leave unset falls back to a platform default. ``models`` layers per purpose instead (below). So put shared defaults on the preset and override per-agent (or per-run) only what differs. An `update_agent` or `update_preset` merges its ``config`` key by key, inside ``models`` purpose by purpose and inside ``network`` host by host, so send only what you change, and a ``null`` removes it.
 
 The knobs you reach for most:
 
