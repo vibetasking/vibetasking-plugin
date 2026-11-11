@@ -30,8 +30,16 @@ Start from this skeleton. Each `<div class="page">` becomes one slide. It sets u
     box-sizing: border-box;
   }
 
+  :root {
+    /* The deck's look: the client's brand colors and fonts, or ones chosen for the subject. */
+    --primary: #1E2761;
+    --accent: #408EC6;
+    --font-body: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    --font-display: 'Playfair Display', Georgia, serif;
+  }
+
   body {
-    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    font-family: var(--font-body);
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
@@ -60,11 +68,13 @@ Start from this skeleton. Each `<div class="page">` becomes one slide. It sets u
 
 ## Slide Layout Patterns
 
+Each pattern shows a layout, not a look: its colors and fonts come from the variables in the base structure. Set those from the client's brand, or pick ones that fit the subject, and mix patterns across the deck.
+
 ### Title Slide
 
 ```html
 <div class="page" style="
-  background: linear-gradient(135deg, #1E2761, #408EC6);
+  background: linear-gradient(135deg, var(--primary), var(--accent));
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -72,9 +82,9 @@ Start from this skeleton. Each `<div class="page">` becomes one slide. It sets u
   text-align: center;
   color: white;
 ">
-  <h1 style="font-family: 'Playfair Display', Georgia, serif; font-size: 42pt; font-weight: 700; margin-bottom: 8mm;">Presentation Title</h1>
+  <h1 style="font-family: var(--font-display); font-size: 42pt; font-weight: 700; margin-bottom: 8mm;">Presentation Title</h1>
   <p style="font-size: 18pt; opacity: 0.85;">Subtitle or tagline goes here</p>
-  <p style="font-size: 12pt; opacity: 0.6; margin-top: 15mm;">Author Name — March 2026</p>
+  <p style="font-size: 12pt; opacity: 0.6; margin-top: 15mm;">Author Name, date</p>
 </div>
 ```
 
@@ -82,14 +92,14 @@ Start from this skeleton. Each `<div class="page">` becomes one slide. It sets u
 
 ```html
 <div class="page" style="padding: 15mm 20mm;">
-  <h2 style="font-size: 28pt; color: #1E2761; margin-bottom: 10mm;">Section Title</h2>
+  <h2 style="font-size: 28pt; color: var(--primary); margin-bottom: 10mm;">Section Title</h2>
   <div style="display: flex; gap: 15mm;">
     <div style="flex: 1;">
-      <h3 style="font-size: 16pt; color: #408EC6; margin-bottom: 4mm;">Left Column</h3>
+      <h3 style="font-size: 16pt; color: var(--accent); margin-bottom: 4mm;">Left Column</h3>
       <p style="font-size: 13pt; line-height: 1.6; color: #333;">Content for the left side.</p>
     </div>
     <div style="flex: 1;">
-      <h3 style="font-size: 16pt; color: #408EC6; margin-bottom: 4mm;">Right Column</h3>
+      <h3 style="font-size: 16pt; color: var(--accent); margin-bottom: 4mm;">Right Column</h3>
       <p style="font-size: 13pt; line-height: 1.6; color: #333;">Content for the right side.</p>
     </div>
   </div>
@@ -101,7 +111,7 @@ Start from this skeleton. Each `<div class="page">` becomes one slide. It sets u
 ```html
 <div class="page" style="display: flex; padding: 0;">
   <div style="flex: 1; padding: 20mm; display: flex; flex-direction: column; justify-content: center;">
-    <h2 style="font-size: 28pt; color: #1E2761; margin-bottom: 8mm;">Key Insight</h2>
+    <h2 style="font-size: 28pt; color: var(--primary); margin-bottom: 8mm;">Key Insight</h2>
     <p style="font-size: 14pt; line-height: 1.7; color: #444;">
       Supporting text that explains the visual on the right.
     </p>
@@ -137,18 +147,18 @@ Start from this skeleton. Each `<div class="page">` becomes one slide. It sets u
 
 ```html
 <div class="page" style="padding: 20mm; background: #F8F9FA;">
-  <h2 style="font-size: 24pt; color: #1E2761; margin-bottom: 15mm; text-align: center;">Key Metrics</h2>
+  <h2 style="font-size: 24pt; color: var(--primary); margin-bottom: 15mm; text-align: center;">Key Metrics</h2>
   <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10mm; text-align: center;">
     <div>
-      <div style="font-size: 48pt; font-weight: 700; color: #408EC6;">92%</div>
+      <div style="font-size: 48pt; font-weight: 700; color: var(--accent);">92%</div>
       <div style="font-size: 12pt; color: #666; margin-top: 3mm;">Customer Satisfaction</div>
     </div>
     <div>
-      <div style="font-size: 48pt; font-weight: 700; color: #408EC6;">3.2M</div>
+      <div style="font-size: 48pt; font-weight: 700; color: var(--accent);">3.2M</div>
       <div style="font-size: 12pt; color: #666; margin-top: 3mm;">Active Users</div>
     </div>
     <div>
-      <div style="font-size: 48pt; font-weight: 700; color: #408EC6;">47%</div>
+      <div style="font-size: 48pt; font-weight: 700; color: var(--accent);">47%</div>
       <div style="font-size: 12pt; color: #666; margin-top: 3mm;">Year-over-Year Growth</div>
     </div>
   </div>
@@ -166,7 +176,7 @@ Start from this skeleton. Each `<div class="page">` becomes one slide. It sets u
   padding: 30mm 40mm;
   color: white;
 ">
-  <div style="font-size: 60pt; color: #408EC6; line-height: 1; margin-bottom: 5mm;">&ldquo;</div>
+  <div style="font-size: 60pt; color: var(--accent); line-height: 1; margin-bottom: 5mm;">&ldquo;</div>
   <p style="font-size: 22pt; line-height: 1.6; font-style: italic; margin-bottom: 10mm;">
     The best way to predict the future is to invent it.
   </p>
@@ -178,7 +188,7 @@ Start from this skeleton. Each `<div class="page">` becomes one slide. It sets u
 
 ```html
 <div class="page" style="padding: 15mm 20mm;">
-  <h2 style="font-size: 24pt; color: #1E2761; text-align: center; margin-bottom: 12mm;">Before vs. After</h2>
+  <h2 style="font-size: 24pt; color: var(--primary); text-align: center; margin-bottom: 12mm;">Before vs. After</h2>
   <div style="display: flex; gap: 10mm; height: 70%;">
     <div style="flex: 1; background: #FFF3F3; border-radius: 4px; padding: 10mm;">
       <h3 style="font-size: 16pt; color: #C0392B; margin-bottom: 6mm;">Before</h3>
@@ -204,26 +214,26 @@ Start from this skeleton. Each `<div class="page">` becomes one slide. It sets u
 
 ```html
 <div class="page" style="padding: 15mm 20mm;">
-  <h2 style="font-size: 24pt; color: #1E2761; margin-bottom: 15mm;">Roadmap</h2>
+  <h2 style="font-size: 24pt; color: var(--primary); margin-bottom: 15mm;">Roadmap</h2>
   <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6mm;">
     <div style="flex: 1; text-align: center;">
-      <div style="width: 40px; height: 40px; border-radius: 50%; background: #408EC6; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 5mm; font-weight: 700;">1</div>
-      <h4 style="font-size: 13pt; color: #1E2761; margin-bottom: 3mm;">Research</h4>
+      <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--accent); color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 5mm; font-weight: 700;">1</div>
+      <h4 style="font-size: 13pt; color: var(--primary); margin-bottom: 3mm;">Research</h4>
       <p style="font-size: 11pt; color: #666;">Q1 2026</p>
     </div>
     <div style="flex: 1; text-align: center;">
-      <div style="width: 40px; height: 40px; border-radius: 50%; background: #408EC6; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 5mm; font-weight: 700;">2</div>
-      <h4 style="font-size: 13pt; color: #1E2761; margin-bottom: 3mm;">Prototype</h4>
+      <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--accent); color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 5mm; font-weight: 700;">2</div>
+      <h4 style="font-size: 13pt; color: var(--primary); margin-bottom: 3mm;">Prototype</h4>
       <p style="font-size: 11pt; color: #666;">Q2 2026</p>
     </div>
     <div style="flex: 1; text-align: center;">
-      <div style="width: 40px; height: 40px; border-radius: 50%; background: #408EC6; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 5mm; font-weight: 700;">3</div>
-      <h4 style="font-size: 13pt; color: #1E2761; margin-bottom: 3mm;">Beta</h4>
+      <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--accent); color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 5mm; font-weight: 700;">3</div>
+      <h4 style="font-size: 13pt; color: var(--primary); margin-bottom: 3mm;">Beta</h4>
       <p style="font-size: 11pt; color: #666;">Q3 2026</p>
     </div>
     <div style="flex: 1; text-align: center;">
       <div style="width: 40px; height: 40px; border-radius: 50%; background: #27AE60; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 5mm; font-weight: 700;">4</div>
-      <h4 style="font-size: 13pt; color: #1E2761; margin-bottom: 3mm;">Launch</h4>
+      <h4 style="font-size: 13pt; color: var(--primary); margin-bottom: 3mm;">Launch</h4>
       <p style="font-size: 11pt; color: #666;">Q4 2026</p>
     </div>
   </div>
@@ -249,10 +259,10 @@ Start from this skeleton. Each `<div class="page">` becomes one slide. It sets u
 
 ```css
 /* Diagonal */
-background: linear-gradient(135deg, #1E2761, #408EC6);
+background: linear-gradient(135deg, var(--primary), var(--accent));
 
 /* Radial spotlight */
-background: radial-gradient(circle at 30% 40%, #408EC6 0%, #1E2761 70%);
+background: radial-gradient(circle at 30% 40%, var(--accent) 0%, var(--primary) 70%);
 
 /* Multi-stop */
 background: linear-gradient(to right, #2C5F2D, #97BC62, #F5F5F5);

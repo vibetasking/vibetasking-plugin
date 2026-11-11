@@ -15,12 +15,14 @@ most tasks need: call them as written. Use `composio googledrive <action>
 Composio's action names often don't match Google's own API. Use the name on
 the right, not the guess on the left:
 
-- Finding a folder is `find_folder`, not `search_file`, and it filters by
-  `name_exact`/`name_contains`, not `name`.
+- Finding a folder is `find_folder --json '{"name_exact": "<name>"}'`, or
+  `find_folder --json '{"name_contains": "<text>"}'` for part of a name, not
+  `search_file` and not `name`.
 - Finding or listing files by query is `find_file`, not `list_files` (that
   action doesn't exist).
-- `create_folder` takes `folder_name` and `parent_id`, not `parent_folder_id`.
-- Moving a file is `move_file` (`file_id` plus `add_parents`/`remove_parents`).
+- Creating a folder is `create_folder --json '{"name": "<name>", "parent_id": "<id>"}'`, not
+  `folder_name` or `parent_folder_id`.
+- Moving a file is `move_file --json '{"file_id": "<id>", "add_parents": "<folder id>", "remove_parents": "<old folder id>"}'`.
 - Sharing a file or granting access is `create_permission`.
 
 ## Uploads
@@ -32,8 +34,8 @@ intent, don't just try `upload_file` and fall back by trial and error:
 - `upload_file --json '{"file_to_upload": "<path>", "folder_to_upload_to": "<id>"}'`: new file,
   **5MB max**. An invalid or missing folder id silently lands the file in
   Drive root with exit 0, so resolve the folder id first (`find_folder`).
-- `resumable_upload`: new file over 5MB (`chunk_size` must be a multiple of
-  256KB).
+- `resumable_upload --json '{"file_to_upload": "<path>", "folder_to_upload_to": "<id>", "chunk_size": 5242880}'`:
+  new file over 5MB (`chunk_size` must be a multiple of 256KB).
 - `upload_update_file --json '{"file_id": "<id>", "file_to_upload": "<path>"}'`: replace an
   existing file's content.
 - `upload_from_url --json '{"name": "<name>", "source_url": "<url>"}'`: persist an

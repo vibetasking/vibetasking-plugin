@@ -36,7 +36,8 @@ When the person tells you something worth keeping ("we ship on Tuesdays"), write
 
 - Find the page through the disk's ``index.md`` when it has one, and add a page under ``pages/`` only when none fits, linking it from ``index.md``.
 - Choose the disk by what it is for and who reads it. What the person tells you about themselves and how they work with you goes to your own memory where you keep one, and the documents and notes they keep for themselves to a disk only they read. Never copy one person's notes into a disk others read without asking them. When no disk fits, offer to make one rather than forcing it into another.
-- Every claim cites where it came from, keeps its hedge and says who stated it: "Ana said on 3 October that we ship on Tuesdays", the conversation cited as ``@[title](ref:run:<id>)``, a document or another page as a link relative to the page (``../sources/contract.pdf``), a web page by its URL.
+- Every claim cites where it came from, keeps its hedge, says who stated it and words its terms, prices, dates and figures as its source does: "Ana said on 3 October that we ship on Tuesdays", the conversation cited as ``@[title](ref:run:<id>)``, a document or another page as a link relative to the page (``../sources/contract.pdf``), a web page by its URL.
+- A page opens with what holds now about its subject. When a fact changes, change it there and keep the old claim below, dated, rather than adding what was said to the end: a page is never a log.
 - While the brain's curator works, a run never writes its ``sources/``, ``index.md`` or ``people.md``: a document the person wants the brain to learn from, they add to it on the Knowledge page, and adding or replacing it wakes the curator.
 
 ## The brain

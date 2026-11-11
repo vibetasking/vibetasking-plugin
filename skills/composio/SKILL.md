@@ -13,7 +13,7 @@ description: Composio action discovery and shell usage
 composio gmail --help                 # list actions for a toolkit
 composio gmail fetch_emails --help    # show parameters for an action
 composio gmail fetch_emails --json '{"query": "from:user@example.com", "max_results": 5}'
-composio slack send_message --json '{"channel": "#general", "text": "Hello"}'
+composio slack send_message --json '{"channel": "#general", "markdown_text": "Hello"}'
 ```
 
 You can also pipe JSON via stdin: `echo '{"param": "value"}' | composio <toolkit> <action>`

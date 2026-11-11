@@ -32,7 +32,7 @@ A channel conversation's composer carries an **Agent** and **You** switch. **You
 
 ## The workspace's AI providers
 
-The app's settings hold, under **AI providers**, what the workspace's AI runs on: its providers (its Claude Code or ChatGPT subscription, its own API accounts such as an OpenAI or Anthropic key, an Azure, Bedrock or Vertex tenancy or a server of its own, each checked with its provider before it is saved, and the platform's, each with a switch only an owner turns), and what each purpose runs on, Automatic being the platform's own configuration. Connecting an account offers to use it for every purpose it serves. An owner or admin who manages credentials sets them up there. `get_purposes` and `list_accounts` read the same (see **Where the workspace's AI runs** in `configuration.md`).
+The app's settings hold, under **AI providers**, what the workspace's AI runs on: its providers (its Claude Code or ChatGPT subscription, its own API accounts such as an OpenAI or Anthropic key, an Azure, Bedrock or Vertex tenancy or a server of its own, each checked with its provider before it is saved, and the platform's, each with a switch only an owner turns), and what each purpose runs on, Default being the platform's own configuration. Connecting an account offers to use it for every purpose it serves. An owner or admin who manages credentials sets them up there. `get_purposes` and `list_accounts` read the same (see **Where the workspace's AI runs** in `configuration.md`).
 
 ## Learning the platform
 

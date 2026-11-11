@@ -37,9 +37,9 @@ composio googlesheets spreadsheets_values_append --json '{"spreadsheet_id": "abc
 These shapes are complete: call them as written. For any other action,
 `composio googlesheets <action> --help` shows its parameters.
 
-- Creating a spreadsheet is `create_google_sheet1` with `title`, not `create_spreadsheet` with `spreadsheet_name` (that action doesn't exist).
+- Creating a spreadsheet is `composio googlesheets create_google_sheet1 --json '{"title": "Sales"}'`, not `create_spreadsheet` with `spreadsheet_name` (that action doesn't exist).
 - `spreadsheets_values_append` appends after the last row of the table it detects in `range`. Give it a sheet-qualified range or the exact sheet name alone, never a bare `A:F`, and read `updates.updatedRange` in the response to see where the rows actually landed. For strict placement use `values_update`.
-- `update_values_batch` writes several ranges in one call: `data` is an array of `{"range": ..., "values": [[...]]}` objects, plus top-level `spreadsheet_id` and `value_input_option`.
+- `update_values_batch` writes several ranges in one call, `data` holding one `{"range": ..., "values": [[...]]}` object per range: `composio googlesheets update_values_batch --json '{"spreadsheet_id": "abc123", "value_input_option": "RAW", "data": [{"range": "Sales!A2:B2", "values": [["Alice", 3]]}]}'`.
 - `googlesheets_values_get` returns a dict keyed by A1 notation (e.g., `{"A32": "Hello World"}`). Does NOT return empty cells. Don't assume fewer rows/columns than actually exist.
 - Writing a range is `values_update`, not `update_spreadsheet_values`. `googlesheets_values_update` takes a 2D array (matrix). First element maps to the first cell in the range. Watch for off-by-one errors.
 - Always pass `value_input_option: RAW` on `spreadsheets_values_append` and `values_update`, unless a formula genuinely needs USER_ENTERED evaluation. USER_ENTERED tells Sheets to reparse the string as if a human typed it, which silently strips a leading `+` from phone numbers and rewrites date-shaped text into a raw date serial number. Treat any phone-like or date-like text field as RAW-only.
@@ -71,8 +71,6 @@ Inside a run, `python system/skills/spreadsheets/rules/scripts/recalc.py file.xl
 
 ## Messy data
 
-Real-world data is messy. It's often ill-structured, with errors, or just plain wrong.
-
 - Common issues include shifted dates, slightly mistyped identifiers, and flipped signs in numeric values.
 - Watch out for suspicious high-level patterns that conflict with the user's task or perceived expectations.
 - When you detect an issue, first try to work around it or correct it yourself. If that's not possible, clearly explain the problem to the user.
@@ -92,7 +90,6 @@ When each row needs its own written reasoning or justification, write those text
 
 ## Data verification
 
-- It's easy to make mistakes when writing data. Before doing so, make sure you're certain about what data you're writing, and where.
 - After every write, read the range back and check it against its row and column context, since a value in the wrong cell reads as correct in isolation. Confirm you wrote to the intended cell ranges.
 - When the read shows a mistake, roll back what was written by accident, then apply what is missing.
 - When a mistake cannot be repaired, stop and tell the user what happened.

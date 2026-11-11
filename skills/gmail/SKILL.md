@@ -11,14 +11,20 @@ action's parameters before your first call to it.
 
 ## Known action names and parameters
 
-- Fetching one message is `fetch_message_by_message_id` with `message_id`,
+- Fetching one message is `fetch_message_by_message_id --json '{"message_id": "<id>"}'`,
   not `id`.
 - The four compose actions (`send_email`, `create_email_draft`,
-  `update_draft`, `reply_to_thread`) send to `recipient_email`, not `to`.
+  `update_draft`, `reply_to_thread`) send to `recipient_email`, not `to`, as in
+  `send_email --json '{"recipient_email": "<addr>", "subject": "<subject>", "body": "<text>", "files": ["<path>"]}'`.
   They attach local files via `files`, an array of sandbox-relative paths.
   This platform replaces composio's own `attachment` field with `files` in
   the schema, so trust what `--help` shows on these actions over composio's
   published docs.
+- Filters cannot be created or deleted here: Google requires the
+  `gmail.settings.basic` scope, which this connection does not hold, so no
+  filter action is offered. Write the rules as an Atom XML file the user
+  imports in Gmail (Settings, Filters and Blocked Addresses, Import filters),
+  or tell them the rule to set up in Gmail's settings.
 
 ## Fetching email
 
