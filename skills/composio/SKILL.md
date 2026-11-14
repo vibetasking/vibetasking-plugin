@@ -36,8 +36,6 @@ composio zendesk update_zendesk_ticket --json-file payload.json
 
 Get an action's exact shape before your first call to it in this run, from one of two places. When the service has its own skill (check your skill index), read the skill: a command it spells out with arguments is complete, call it as written with no `--help` round trip. For any other action, run `--help` first instead of guessing a name from what "sounds right" (e.g. a REST-API-style name).
 
-Recipe shortcut: skip discovery when your recipe provides a known successful approach.
-
 ## Don't chain mutating calls with `&&`
 
 When applying the same mutation across several records (e.g. updating 8 tickets), don't chain the `composio` invocations with `&&` in one shell call. `&&` stops at the first failure, so one bad field or argument on record 3 silently drops records 4-8 with no update attempted at all — and the truncated output can look like a clean run at a glance. Issue each mutating call separately (or loop with per-call status checks) so a single failure doesn't take out the rest of the batch, and you can see exactly which records still need the update.

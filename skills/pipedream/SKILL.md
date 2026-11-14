@@ -25,8 +25,6 @@ You can also pipe JSON via stdin: `echo '{"param": "value"}' | pipedream <app> <
 3. `pipedream <app> --help`: list available actions and their descriptions for an app.
 4. `pipedream <app> <action> --help`: show parameters for an action.
 
-Recipe shortcut: skip discovery when your recipe provides a known successful approach.
-
 ## Tips & Tricks
 
 - Some parameters offer remote options (channel ids, sheet ids, pipeline ids). When you already know the id (from a prior read action), pass it directly. Otherwise call the app's `configure_prop` action to list the valid label/value pairs:
