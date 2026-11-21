@@ -99,7 +99,7 @@ When an agent should act on what happens in the app (a sign up, a form sent, an 
 
 For app features that start runs or message agents, the app's server code calls the VibeTasking API's ``/v1`` operations (``https://api.vibetasking.com/v1``, reference at ``/docs``, spec at ``/openapi.json``) with an API key. Mint one yourself:
 
-1. `create_key` with the ``workspace_id`` from `get_me`, a ``name`` that says what it is for, and explicit ``scopes``, the narrowest set covering what the app calls (``resource:action`` strings like ``runs:read`` or ``runs:create``, since an unscoped key is refused). Omit ``expires_at`` so the key outlives the run. It still lives with the conversation that made it: canceling or deleting that conversation revokes it, so tell the user. The response carries ``token`` exactly once, and it can never be read again.
+1. `create_key` with the ``workspace_id`` from `get_me`, a ``name`` that says what it is for, and explicit ``scopes``, the narrowest set covering what the app calls (``resource:action`` strings like ``runs:read`` or ``runs:create``, since an unscoped key is refused). Omit ``expires_at`` for a key that never expires. The key is the user's own: it outlives this conversation and works until `delete_key` revokes it, so tell the user it exists and how to revoke it. The response carries ``token`` exactly once, and it can never be read again.
 2. Put the token on the site as a secret at once, and nowhere else: `set_site_secrets` with ``{"VIBETASKING_API_KEY": "<the token>"}``. If the token is lost, mint a new key, set it the same way and delete the old one (`list_keys`, `delete_key`).
 3. Call the API only from server code, passing the key as the ``api-key`` header from ``context.env``. Never embed it in client JavaScript and never expose it through a response.
 
@@ -116,7 +116,7 @@ export async function onRequestPost(context) {
 
 Validate and constrain what the server code forwards: it runs with the key's full authority, so a passthrough proxy hands that authority to every visitor.
 
-A run the app starts comes back as the run itself: its own id is ``id``, the one the app keeps to follow it with `get_run`. Its ``run_id`` names the run that started it, which for a key minted here is this conversation. This conversation hears of a run the app starts only when the call passes ``watch: true``, so leave it out unless the user wants each one reported here.
+A run the app starts comes back as the run itself: its own id is ``id``, the one the app keeps to follow it with `get_run`. The key is the user's and carries no run, so a run the app starts names no run that started it, this conversation never hears of it, and the call passes no ``watch``, which a key with no run is refused.
 
 ## Selling on the site
 

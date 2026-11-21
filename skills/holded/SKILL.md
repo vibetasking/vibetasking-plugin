@@ -6,7 +6,7 @@ description: Holded ERP document and contact operations via the `holded` CLI, an
 
 # Holded (HoldedOpenApiToolkit)
 
-Holded is an ERP/invoicing platform. API domains: invoicing (contacts, invoices, estimates, credit notes, products, services), accounting, CRM (leads, funnels), projects, and team management.
+Holded is an ERP/invoicing platform. API domains: sales and purchase documents (invoices, estimates, credit notes, orders, waybills, purchases), contacts, products and services, inventory (warehouses, production orders), accounting and treasury, CRM (leads, funnels, events), projects, bookings, and HR and payroll (employees, time tracking, time off, payslips, salary records).
 
 The action names below are the v2 API's, loaded by a key starting `pat_`. A legacy key loads the v1 API, whose actions are named and paged differently: run `holded --help` for the names this run has.
 
@@ -38,7 +38,9 @@ holded create_an_invoice --json '{"contact_id": "<id from list_contacts>", "item
 
 ## API key permissions
 
-A `403` means the connected API key lacks permission for that operation. Holded words it two ways: `Insufficient permissions: <scope> required` (naming a scope like `accounting:taxes.read`, `accounting:chart-of-accounts.read`, or `inventory:products.read`) or a bare `Access denied.` (common on reads such as contacts, products, and invoices). Either way, retrying the same call will not help. Tell the user to enable the missing permission on the Holded API key and stop.
+A `403` that names a scope, `Insufficient permissions: <scope> required` (a scope like `accounting:taxes.read`, `accounting:chart-of-accounts.read`, or `inventory:products.read`), means the connected API key lacks that permission. Retrying will not help: tell the user to enable it on the Holded API key and stop.
+
+A bare `Access denied.` says less. It can mean the key lacks permission for that resource, but Holded also answers it to a key that just read the same endpoint, for example partway through paging a long list. If this key already read that resource in the run, it holds the permission: wait a minute, retry with a smaller page or a narrower filter (`status`, a date range or a project), and never report it as a missing permission. Only a resource the key could never read points at the key's permissions.
 
 # Holded in the browser (app.holded.com)
 

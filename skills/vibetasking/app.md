@@ -21,6 +21,15 @@ The VibeTasking Browser extension, installed from the Chrome Web Store, does thr
 - **Its side panel follows those runs.** It lists the runs working in that browser, opens each one in the app, and raises a notification when one waits on the person. **Connect this browser** signs the browser in to a workspace, so the runs the person starts in their Chrome reach it with the app closed, while they are at that computer.
 - **It records a task**, as **Recording a task** above describes.
 
+## Their own computers
+
+A person's own computer, Windows, macOS or Linux, joins the workspace through the VibeTasking connector, a small program installed on it, so runs can work on that computer: with the account of whoever connected it, its programs, its files and the office network it sits on, in the folders picked for the agent. It is how an agent reaches software that only runs there, such as a desktop accounting or payroll program with no API.
+
+- **Connecting a computer.** The person opens Settings, then Devices, and picks **Connect a computer** (in Spanish, Ajustes, Dispositivos, **Conectar un ordenador**), on the computer that is joining or anywhere else. It shows one command for that computer's system, to paste into PowerShell on Windows, Terminal on a Mac or a terminal on Linux, then press Enter. The command installs the connector for that account alone, with no administrator rights, and opens a page in the browser where the person types the code the terminal shows, picks the workspace and names the computer. A person who closed that page before finishing runs the same command again. Connecting a computer takes the workspace's permission to manage credentials, so a member without it asks whoever manages the workspace.
+- **Putting an agent on it.** An agent's settings carry a **Computer** line (in Spanish, **Ordenador**, in the group **Cómo trabaja**) that picks the cloud or one of the workspace's computers, and the folders its runs work in there. Before the workspace has a computer, that same line offers **Connect a computer** to whoever may connect one.
+- **What the person sees.** The computer shows on the Devices page, online or offline, with whose it is and who it is shared with, and its own menu bar or taskbar shows a VibeTasking icon listing the runs working on it, with **Pause** and **Sign out**. A run whose computer is offline waits and goes on once it is back.
+- **Browsing on it.** A run on the computer browses with that computer's own Chrome once the VibeTasking Browser extension is installed in that Chrome and, in the extension's side panel, the person picks **Allow** under **Use with this computer** (in Spanish, **Permitir** under **Usar con este ordenador**). The computer's card on the Devices page says whether its Chrome is ready.
+
 ## Talking instead of typing
 
 - **Dictate** in the composer types what the person says into the message as they speak, in any conversation, while the workspace's dictation runs on a provider it has switched on.

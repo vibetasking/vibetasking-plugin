@@ -407,14 +407,14 @@ def _capture_nav(path: Path) -> dict | None:
 def _restore_nav(path: Path, nav: dict | None, result: OptimizeResult) -> None:
     """Re-insert the links + outline a ghostscript pass stripped. No-op if the page count changed."""
 
-    # Page geometry survives pdfwrite, so captured rects map 1:1. A page-count change means the layout
-    # shifted and rects would land wrong, so bail.
     if not nav:
         return
 
     tmp_path: Path | None = None
     try:
         with pymupdf.open(path) as doc:
+            # Page geometry survives pdfwrite, so captured rects map 1:1. A page-count change means the layout
+            # shifted and rects would land wrong, so bail.
             if doc.page_count != nav["page_count"]:
                 return
             restored = 0

@@ -135,7 +135,17 @@ page works from anywhere via `as_organization`.
 
 ## Limits
 
-LinkedIn caps invitations at roughly 80-100/day on paid accounts (~5/month on free
-accounts with a note attached); profile reads are safe up to about 100/day. A 429 raises
-as a rate-limit retry telling you to stop that action type for now rather than retry —
-respect it instead of looping.
+LinkedIn sets these per account, whatever tool reaches it:
+
+- **Invitations**: roughly 80 to 100 a day and about 200 a week on a paid account. A free
+  account sends about 5 a month with a note and about 150 a week without one.
+- **Profile reads**: about 100 a day.
+- **Search results**: about 1,000 a day, or 2,500 with Sales Navigator or Recruiter,
+  counted as the hits read, not the searches made.
+
+Space calls out at irregular intervals, never in a burst or at a fixed rhythm, and spread
+a day's batch over working hours. A new or long inactive account, or one with fewer than
+about 150 connections, starts with small batches and grows them over the weeks.
+
+A 429, or an invitation refused because the account reached its limit, raises a retry
+telling you to stop that action type for now. Respect it instead of looping.
