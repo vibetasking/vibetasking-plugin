@@ -12,10 +12,10 @@ description: Direct messages, connections, invitations both ways, people, compan
 
 The CLI is `linkedin` (bare, no `composio` prefix): `linkedin <action> --json '{...}'`,
 `linkedin <action> --help` for a specific action's parameters. It reaches the LINKEDIN
-channel or asset linked to this run through a clean Unipile-backed API — no browser to
+channel or asset linked to this run through a clean Unipile-backed API, no browser to
 drive.
 
-## Two other things also answer to "linkedin" — don't try them first
+## Two other things also answer to "linkedin": don't try them first
 
 - **`composio linkedin <action>`** is a *different* toolkit (`LinkedinComposioToolkit`,
   the official LinkedIn OAuth API) with its own connected account. This skill's toolkit
@@ -33,12 +33,12 @@ Conversation:
 
 | action | args | returns / notes |
 |---|---|---|
-| `whoami` | — | own `member_id`, `name`, `public_identifier`, `headline`, `premium_features`, and the `organizations` (company pages) this account can act as — cheapest auth check |
+| `whoami` | — | own `member_id`, `name`, `public_identifier`, `headline`, `premium_features`, and the `organizations` (company pages) this account can act as: cheapest auth check |
 | `list_conversations` | `limit` (default 20), `cursor` | inbox, most recent first: `chat_id`, `contact_member_id`, `name`, `unread`, `last_activity` |
 | `get_conversation` | `limit` (default 20), `chat_id` | the messages of **this run's bound conversation**, oldest first, each with `from_me` and `message_id`. Pass `chat_id` (from `list_conversations`) to read a thread not bound to this run |
 | `send_message` | `text` (req), `recipient` (member id, defaults to the run's bound contact), `subject` (InMail only) | picks the transport itself: a plain DM to a 1st-degree connection, InMail to anyone else while credits last. An InMail send reports `transport` and `inmail_credits_left` and spends one credit |
 | `get_inmail_balance` | — | remaining InMail credits per pool (`premium`, `sales_navigator`, `recruiter`), null meaning no such subscription. Check it before sizing an outreach batch that reaches beyond 1st-degree connections |
-| `send_file` | `file_path` (sandbox-relative, 15MB max), `recipient` | needs an existing chat — send a text message first if this conversation has none |
+| `send_file` | `file_path` (sandbox-relative, 15MB max), `recipient` | needs an existing chat: send a text message first if this conversation has none |
 | `react_to_message` | `message_id` (req), `emoji` (req, the emoji itself) | react to a message in the conversation |
 | `edit_message` | `message_id` (req), `text` (req) | own messages only, within 60 minutes of sending |
 | `delete_message` | `message_id` (req) | own messages only, within 60 minutes of sending |
@@ -49,7 +49,7 @@ Profiles and search:
 |---|---|---|
 | `get_profile` | `identifier` (req: `/in/<handle>` slug or member id), `sections` (csv, e.g. `experience,education,skills`) | a member's profile |
 | `get_company` | `identifier` (req: `/company/<name>` slug or organization id) | a company page's profile (description, industry, followers) |
-| `search_people` | `keywords`, `url`, or `filters` (one required), `limit` (default 10), `cursor` | `{hits:[{member_id, name, headline, location, public_identifier, network_distance}], search, total, cursor}` — a null `cursor` means results are exhausted. `search` says which product ran, and a Sales Navigator or Recruiter hit carries `sales_navigator_id` or `recruiter_id` in place of `member_id` |
+| `search_people` | `keywords`, `url`, or `filters` (one required), `limit` (default 10), `cursor` | `{hits:[{member_id, name, headline, location, public_identifier, network_distance}], search, total, cursor}`: a null `cursor` means results are exhausted. `search` says which product ran, and a Sales Navigator or Recruiter hit carries `sales_navigator_id` or `recruiter_id` in place of `member_id` |
 | `search_companies` | `keywords`, `url`, or `filters`, `limit`, `cursor` | company hits. `search` says which product ran |
 | `search_jobs` | `keywords`, `url`, or `filters`, `limit`, `cursor` | job listings with `job_id`, `title`, `company`, `location`, `url` |
 | `search_posts` | `keywords`, `url`, or `filters`, `limit`, `cursor` | posts matching the query by content |
@@ -66,7 +66,7 @@ Network and invitations:
 | `list_sent_invitations` | `limit` (default 50) | pending sent invitations, each with `invitation_id`, read across as many pages as `limit` needs |
 | `cancel_invitation` | `invitation_id` (req, from `list_sent_invitations`) | withdraw a stale invitation. LinkedIn blocks re-inviting the same person for weeks afterwards |
 | `list_received_invitations` | `limit` (default 50) | pending invitations others sent this account, each with `invitation_id`, the inviter, and any note |
-| `accept_invitation` | `invitation_id` (req) | accept — the sender becomes a 1st-degree connection |
+| `accept_invitation` | `invitation_id` (req) | accept: the sender becomes a 1st-degree connection |
 | `decline_invitation` | `invitation_id` (req) | decline, without notifying the sender |
 | `endorse_skill` | `member_id` (req), `skill_endorsement_id` (req, from `get_profile` with `sections="skills"`) | endorse one skill on a member's profile |
 
@@ -84,7 +84,7 @@ Posts:
 | `list_member_comments` | `identifier` (req), `limit`, `cursor` | comments a member has written |
 | `list_member_reactions` | `identifier` (req), `limit`, `cursor` | reactions a member has left |
 
-Jobs and recruiting (job postings work on any account; pipeline actions need Recruiter,
+Jobs and recruiting (job postings work on any account. Pipeline actions need Recruiter,
 `save_lead` needs Sales Navigator):
 
 | action | args | returns / notes |
@@ -93,7 +93,7 @@ Jobs and recruiting (job postings work on any account; pipeline actions need Rec
 | `create_job_posting` | `title`, `location`, `workplace` (ON_SITE/HYBRID/REMOTE), `description` (all req), `company_name` or `company_id`, `employment_status`, `screening_questions`, `auto_rejection_template` | creates a **draft**, nothing goes live |
 | `get_job_posting` | `job_id` (req), `service` (CLASSIC/RECRUITER) | state, counters, cost |
 | `edit_job_posting` | `job_id` (req), `title`, `location`, `workplace`, `description`, `employment_status` | only the fields passed change, and at least one is needed |
-| `publish_job_posting` | `draft_id` (req), `mode` (FREE default), `budget` | **PROMOTED modes spend the company's real LinkedIn job budget** — only with the user's explicit ask and budget |
+| `publish_job_posting` | `draft_id` (req), `mode` (FREE default), `budget` | **PROMOTED modes spend the company's real LinkedIn job budget**: only with the user's explicit ask and budget |
 | `solve_job_checkpoint` | `draft_id` (req), `code` (req) | answer the verification code LinkedIn emails on publish |
 | `close_job_posting` | `job_id` (req), `service` | close a live posting |
 | `list_job_applicants` | `job_id` (req), `keywords`, `sort_by`, `limit`, `cursor` | applicants with `profile_id` and rating |

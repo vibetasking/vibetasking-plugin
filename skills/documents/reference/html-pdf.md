@@ -3,16 +3,16 @@
 Shared reference for the `documents` and `presentations` skills. Covers
 the rendering model, page sizing, the two layout modes, and the rules
 that are code-enforced. Everything below applies to both PDFs and
-slides — slides are just landscape A4 pages in page layout.
+slides. Slides are just landscape A4 pages in page layout.
 
 The renderer is Playwright (Chromium) printing to A4 paper. You design
-in HTML and CSS; the toolkit injects a minimal print stylesheet (page
-geometry, break hints, `box-sizing`, `print-color-adjust` — see
+in HTML and CSS. The toolkit injects a minimal print stylesheet (page
+geometry, break hints, `box-sizing`, `print-color-adjust`, see
 *Page-break hints* below) before your own CSS, so your CSS always wins.
 
 ## What is enforced [enforced]
 
-These rules cannot be bypassed — the toolkit will raise an error or
+These rules cannot be bypassed: the toolkit will raise an error or
 return warnings:
 
 - **`.page` overflow**: any `.page` div whose content exceeds its
@@ -22,7 +22,7 @@ return warnings:
 - **No fake pages**: a page-sized container (≈A4 width) that uses
   `min-height` and has content overflowing past that minimum is
   rejected. This is the "one `<div class='container'>` for a multi-
-  page brochure" anti-pattern — Chromium paginates the long block,
+  page brochure" anti-pattern: Chromium paginates the long block,
   but absolute-positioned footers anchor to the container, background
   colors break at the page gutter, and section spacing doesn't align
   to page boundaries. Fix by using one `<div class="page">` per page
@@ -44,10 +44,10 @@ return warnings:
   paper dimensions, `[torn-block]` when a colored block is split
   across a flow page boundary, and `[trailing-page]` when a flow
   document ends on a blank or near-empty page. Fix them or ignore
-  them deliberately — they name the page and the remedy.
+  them deliberately: they name the page and the remedy.
 
 Everything else is your call. Long decks, dense slides, text-only
-pages, repeated layouts, custom themes — all fine.
+pages, repeated layouts, custom themes, all fine.
 
 ## Page dimensions
 
@@ -60,19 +60,19 @@ In CSS pixels at 96 DPI: portrait 794×1122, landscape 1122×794.
 
 ## Two layout modes
 
-### Flow layout — for content-heavy documents
+### Flow layout: for content-heavy documents
 
 No `.page` divs. Content flows naturally and Chromium paginates
 automatically. The renderer applies 25mm top/bottom, 20mm side
-margins via an injected `@page` rule — declare your own
+margins via an injected `@page` rule. Declare your own
 `@page { margin: … }` to override them. Use this for reports,
-articles, proposals, anything where content length is unpredictable —
+articles, proposals, anything where content length is unpredictable:
 there is **no overflow risk**.
 
 Chromium decides the break points. The injected hints (below) keep
 headings with their content and hold tables, lists, and `.card` /
 `.block` elements together. A sentence continuing on the next page is
-normal; a colored box torn in half is not — give any visually-unitary
+normal. A colored box torn in half is not. Give any visually-unitary
 colored section the class `card` or `block` (or your own
 `page-break-inside: avoid`) and the break will happen around it
 instead of through it. The render flags tears as `[torn-block]`.
@@ -92,12 +92,12 @@ instead of through it. The render flags tears as `[torn-block]`.
 </html>
 ```
 
-### Page layout — for designed pages or slides
+### Page layout: for designed pages or slides
 
 Each `.page` div is one rendered page. Margin is zero so the page can
 hold full-bleed designs. Use this for cover pages, certificates,
 slide decks, dashboards, one-pagers. **The renderer will reject
-overflow** — design content to fit.
+overflow**: design content to fit.
 
 ```html
 <!DOCTYPE html>
@@ -115,22 +115,22 @@ overflow** — design content to fit.
 </html>
 ```
 
-`page-break-after: always` on `.page` is unnecessary — the renderer
-handles it. Use `overflow: hidden` so visual bleeds don't leak; the
+`page-break-after: always` on `.page` is unnecessary: the renderer
+handles it. Use `overflow: hidden` so visual bleeds don't leak. The
 toolkit will still raise on real overflow.
 
-**For multi-page designs, use one `.page` per page** — `height: 297mm`
+**For multi-page designs, use one `.page` per page**: `height: 297mm`
 exact, never `min-height`. A single page-sized container with
 `min-height` is rejected `[enforced]`: Chromium paginates it but
 footers, backgrounds, and section rhythm break at the page gutter.
 
-**Margins are yours in page layout** — the paper margin is zero. Give
-`.page` real padding (documents: `25mm 20mm`; slides: `12mm`–`18mm`)
+**Margins are yours in page layout**: the paper margin is zero. Give
+`.page` real padding (documents: `25mm 20mm`, slides: `12mm`-`18mm`)
 and keep text at least 10mm from the paper edge unless the element is
 intentionally full-bleed. The render warns when text lands within 6mm
 of the edge (`[edge-margins]`) or past it (`[clipped-text]`).
 
-**Size `.page` to the paper exactly** — `210mm × 297mm` portrait,
+**Size `.page` to the paper exactly**: `210mm × 297mm` portrait,
 `297mm × 210mm` landscape (matching the `landscape` argument). The
 renderer puts every `.page` on its own sheet, so a wrong size shows
 up as dead bands or drift rather than bleed, and the render warns
@@ -148,15 +148,15 @@ up as dead bands or drift rather than bleed, and the render warns
 
 ## Images
 
-- **Local files**: `<img src="hero.jpg">` — paths are relative to the sandbox root.
-- **Remote URLs**: `<img src="https://...">` — the toolkit HEADs the
-  URL first; unreachable images fail the render.
+- **Local files**: `<img src="hero.jpg">`. Paths are relative to the sandbox root.
+- **Remote URLs**: `<img src="https://...">`. The toolkit HEADs the
+  URL first. Unreachable images fail the render.
 - **CSS backgrounds** are also resolved: `background-image: url(...)`.
 - **Optimization is automatic.** At embed time the toolkit downscales
   oversized raster images (long edge capped ~2000px) and JPEG-encodes
-  opaque ones; after render it runs the ghostscript cascade. Don't
+  opaque ones. After render it runs the ghostscript cascade. Don't
   hand-optimize.
-- **Crop to what you show.** `object-fit: cover` crops only *visually* —
+- **Crop to what you show.** `object-fit: cover` crops only *visually*:
   the full source is still embedded (then downsampled from). If you need
   just a region of a large screenshot, crop the file to that region
   first (e.g. with Pillow) so you embed the part you actually display.
@@ -167,13 +167,13 @@ generator with smaller resolutions.
 
 ## Links & interactivity
 
-`<a href>` becomes a clickable link in the PDF — web (`https://…`), email
+`<a href>` becomes a clickable link in the PDF: web (`https://…`), email
 (`mailto:…`), phone (`tel:…`), and in-document anchors (`href="#section"`)
 all work. Use them freely for CTAs and contact details. Links and the
 document outline (bookmarks) are preserved automatically through
 compression and the transparency flatten, so a "Book a call" button stays
 clickable in the exported file. (Fillable form fields are *not* preserved
-through compression — don't rely on them.)
+through compression. Don't rely on them.)
 
 ## Print-safe styling (avoid export artifacts)
 
@@ -182,18 +182,18 @@ Chrome's print-to-PDF turns `box-shadow`, `backdrop-filter`, CSS
 overlays into transparency groups. They look perfect in the browser
 preview, but some PDF viewers (notably macOS Preview) render them as gray
 rectangles in the exported file. The renderer auto-flattens the PDF when
-it detects these effects — which removes the artifact — but for the
+it detects these effects (which removes the artifact) but for the
 cleanest, lightest result, prefer print-safe styling:
 
 - **Cards over images**: don't put `box-shadow` on a card that also clips
-  a rounded image (`overflow: hidden` + `border-radius`) — the worst
+  a rounded image (`overflow: hidden` + `border-radius`), the worst
   offender. Use a hairline `border` for definition, or keep the shadow
   tiny (a few pt of blur, no spread).
 - **Don't** stack a shadowed, absolutely-positioned element (a number
   badge, a sticker) directly over an image.
 - **Overlays/glows**: build them with solid fills or `linear-`/`radial-`
   gradients, not big `opacity`/`rgba()` blobs or `backdrop-filter`.
-- Backgrounds, gradients, and colors all render reliably — use them
+- Backgrounds, gradients, and colors all render reliably. Use them
   freely. The scorecard flags artifact-prone effects in the tool result.
 
 ## Page-break hints (the toolkit already adds these)
@@ -204,11 +204,11 @@ The toolkit injects:
   mode (zero for page layout, 25mm/20mm for flow) and the
   `landscape` argument
 - `body { margin: 0; print-color-adjust: exact; }`
-- `page-break-after: avoid` on `h1`–`h6`
+- `page-break-after: avoid` on `h1`-`h6`
 - `page-break-inside: avoid` on `table`, `figure`, `blockquote`,
   `ul`, `ol`, `pre`, `tr`, `.card`, `.block`
 - `img { max-width: 100%; page-break-inside: avoid; }`
-- `.page + .page { page-break-before: always; }` — every `.page`
+- `.page + .page { page-break-before: always; }`: every `.page`
   starts on a fresh sheet
 
 You don't need to repeat these. Your own CSS takes precedence, so
@@ -234,7 +234,7 @@ python system/skills/documents/scripts/preview_pdf.py doc.pdf
 # 5. Look at the sampled images: open each .preview/doc/page-NN.jpg with your file reading tool, as an image.
 ```
 
-Iterate on `doc.html` with your file editing tool between steps; only the
+Iterate on `doc.html` with your file editing tool between steps. Only the
 parts you change need to be regenerated.
 
 For external PDFs (uploads, files you wrote, Word→PDF) that need to be

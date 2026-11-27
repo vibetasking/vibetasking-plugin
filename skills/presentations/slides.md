@@ -10,7 +10,7 @@ The full render workflow (write → validate → render → preview → optional
 
 ## Base Structure
 
-Start from this skeleton. Each `<div class="page">` becomes one slide. It sets up the page geometry only; the design is yours.
+Start from this skeleton. Each `<div class="page">` becomes one slide. It sets up the page geometry only. The design is yours.
 
 ```html
 <!DOCTYPE html>
@@ -270,9 +270,9 @@ background: linear-gradient(to right, #2C5F2D, #97BC62, #F5F5F5);
 
 ### Cards with Shadows
 
-Keep shadows subtle. Heavy `box-shadow` blur — and any `box-shadow` on a
+Keep shadows subtle. Heavy `box-shadow` blur and any `box-shadow` on a
 card that also clips a rounded image (`overflow: hidden` +
-`border-radius`) — can rasterize as a gray rectangle in the exported PDF
+`border-radius`) can rasterize as a gray rectangle in the exported PDF
 (see *Common Pitfalls*). A hairline border is the safest alternative.
 
 ```css
@@ -355,10 +355,10 @@ Generate with `banana generate_image`, search with `image_search`, download with
 
 ## Common Pitfalls
 
-1. **Overflow fails the render** — if a slide's content exceeds the `.page` height, the renderer rejects the PDF and names the offending page. Use `height: 210mm` (exact), **never** `min-height`, plus `overflow: hidden` to bound content. When content genuinely won't fit, split across slides rather than shrinking type. Preview-validate with `python system/skills/documents/scripts/validate_html.py slides.html --landscape` before rendering.
-2. **Font units** — always use `pt` for font sizes, never `px`. Pixel sizes render inconsistently across DPIs and the scorecard warns on any `font-size: \d+px`.
-3. **Print-color-adjust** — the toolkit injects `print-color-adjust: exact` on `body` so backgrounds render. Don't override it.
-4. **Image loading** — remote URLs must be reachable; the toolkit HEADs each one first. Download images locally for reliability across re-renders.
-5. **Fonts** — Google Fonts work well (Playwright fetches them during rendering). Add a `<link>` tag in `<head>` and reference the font in CSS. Good pairings: Inter + Playfair Display, Montserrat + Lora, Raleway + Merriweather, Poppins + Source Serif 4. Always include a system font fallback (e.g. `font-family: 'Inter', 'Segoe UI', sans-serif`).
-6. **PDF first, PPTX second** — always generate and inspect the PDF first. The PPTX conversion screenshots exactly what Playwright renders, so fix issues in PDF before converting.
-7. **Export artifacts (gray boxes)** — `box-shadow`, `backdrop-filter`, `filter: blur()/drop-shadow()`, blend modes, and large semi-transparent overlays become transparency groups that some PDF viewers (macOS Preview) render as gray rectangles, even though they look fine in the browser. The renderer auto-flattens to mitigate, but prefer print-safe styling: hairline borders over shadows on image cards, gradients/solid fills over `rgba()` blobs. See *Print-safe styling* in `html-pdf.md`.
+1. **Overflow fails the render**: if a slide's content exceeds the `.page` height, the renderer rejects the PDF and names the offending page. Use `height: 210mm` (exact), **never** `min-height`, plus `overflow: hidden` to bound content. When content genuinely won't fit, split across slides rather than shrinking type. Preview-validate with `python system/skills/documents/scripts/validate_html.py slides.html --landscape` before rendering.
+2. **Font units**: always use `pt` for font sizes, never `px`. Pixel sizes render inconsistently across DPIs and the scorecard warns on any `font-size: \d+px`.
+3. **Print-color-adjust**: the toolkit injects `print-color-adjust: exact` on `body` so backgrounds render. Don't override it.
+4. **Image loading**: remote URLs must be reachable. The toolkit HEADs each one first. Download images locally for reliability across re-renders.
+5. **Fonts**: Google Fonts work well (Playwright fetches them during rendering). Add a `<link>` tag in `<head>` and reference the font in CSS. Good pairings: Inter + Playfair Display, Montserrat + Lora, Raleway + Merriweather, Poppins + Source Serif 4. Always include a system font fallback (e.g. `font-family: 'Inter', 'Segoe UI', sans-serif`).
+6. **PDF first, PPTX second**: always generate and inspect the PDF first. The PPTX conversion screenshots exactly what Playwright renders, so fix issues in PDF before converting.
+7. **Export artifacts (gray boxes)**: `box-shadow`, `backdrop-filter`, `filter: blur()/drop-shadow()`, blend modes, and large semi-transparent overlays become transparency groups that some PDF viewers (macOS Preview) render as gray rectangles, even though they look fine in the browser. The renderer auto-flattens to mitigate, but prefer print-safe styling: hairline borders over shadows on image cards, gradients/solid fills over `rgba()` blobs. See *Print-safe styling* in `html-pdf.md`.

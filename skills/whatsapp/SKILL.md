@@ -21,7 +21,7 @@ whatsapp send_message --json '{"text": "Your order has shipped!"}'
 ```
 
 Only delivers inside the 24-hour customer service window (since the
-contact's last inbound message). Omit `to` — sends default to the run's
+contact's last inbound message). Omit `to`: sends default to the run's
 bound contact (see Notes for when an explicit recipient is allowed).
 
 ### Send an approved template message (works outside the 24h window)
@@ -32,7 +32,7 @@ whatsapp send_template_message --json '{"name": "order_confirmed", "language": "
 ```
 
 `list_templates` returns each approved template's `variables.body` /
-`header` / `buttons` counts — pass exactly that many strings, in order, as
+`header` / `buttons` counts: pass exactly that many strings, in order, as
 `body_variables` / `header_variables` / `button_url_variables`.
 
 ### Send media
@@ -50,7 +50,7 @@ uploaded for you). `media_type` is one of `image`, `video`, `audio`,
 whatsapp upload_media --json '{"file_path": "brochure.pdf"}'
 ```
 
-The returned `media_id` is valid 30 days — reuse it across sends instead
+The returned `media_id` is valid 30 days. Reuse it across sends instead
 of re-uploading the same asset.
 
 ### Location, contact cards, interactive messages
@@ -62,7 +62,7 @@ whatsapp send_interactive_buttons --json '{"body_text": "Confirm your appointmen
 whatsapp send_interactive_list --json '{"body_text": "Pick a slot", "button_label": "Choose", "rows": [{"id": "am", "title": "Morning"}, {"id": "pm", "title": "Afternoon"}]}'
 ```
 
-`send_interactive_buttons` takes up to 3 buttons; `send_interactive_list`
+`send_interactive_buttons` takes up to 3 buttons. `send_interactive_list`
 takes up to 10 rows. Both are free-form sends, so the 24-hour window rule
 applies. The tapped button/row `id` comes back as the contact's next
 inbound message.
@@ -77,14 +77,14 @@ whatsapp get_template_status --json '{"name": "order_confirmed"}'
 ```
 
 `create_template` / `delete_template` submit or remove templates for Meta
-approval — see `whatsapp create_template --help` for the component shape.
+approval: see `whatsapp create_template --help` for the component shape.
 
 ## Notes
 
 - Omit `to`: every send defaults to the run's bound contact (the person
   this conversation is with). On contact-bound runs, an explicit `to`
   addressing anyone else is rejected unless external recipients are
-  enabled in the settings of the channel this conversation is on — don't assume it's allowed. Runs
+  enabled in the settings of the channel this conversation is on. Don't assume it's allowed. Runs
   with no bound contact must pass `to` explicitly, in E.164 format
   (e.g. `+34600123456`).
 - Meta's 24-hour customer service window gates free-form sends

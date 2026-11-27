@@ -116,7 +116,9 @@ export async function onRequestPost(context) {
 
 Validate and constrain what the server code forwards: it runs with the key's full authority, so a passthrough proxy hands that authority to every visitor.
 
-A run the app starts comes back as the run itself: its own id is ``id``, the one the app keeps to follow it with `get_run`. The key is the user's and carries no run, so a run the app starts names no run that started it, this conversation never hears of it, and the call passes no ``watch``, which a key with no run is refused.
+Server code that reads an integration on a schedule through `call_toolkit_tool` pays for every call whether or not anything is new, 0.075 credits a Composio call and 3 a Pipedream one at the standard rate, so its cost follows how often it asks and how much each read fetches again. When what the app needs is to act on new items, the integration's own event starts an agent as they arrive with nothing billed per check, and a POLL trigger checks at its cadence for what a call costs (**Triggers** in `building.md`).
+
+A run the app starts comes back as the run itself: its own id is ``id``, the one the app keeps to follow it with `get_run`. The key is the user's and carries no run, so a run the app starts names no run that started it, this conversation never hears of it, and the call passes no ``watch``, since a key with no run is refused ``watch: true``.
 
 ## Selling on the site
 

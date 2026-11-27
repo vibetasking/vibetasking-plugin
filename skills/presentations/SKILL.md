@@ -44,11 +44,11 @@ and scales up for longer decks (3 samples for ≤15 slides, 5 for
 ≤40, 8 for 40+). Pass `--all` or `--pages 1,7,12` when you need
 specific frames.
 
-Each slide is a `.page` div sized exactly to the paper —
+Each slide is a `.page` div sized exactly to the paper:
 `width: 297mm; height: 210mm` for landscape. The renderer puts every
 `.page` on its own sheet and rejects overflow, so design content to
 fit. Split across slides rather than cramming. Pad each `.page`
-(12–18mm typical) so text keeps ≥10mm off the slide edge — full-bleed
+(12-18mm typical) so text keeps ≥10mm off the slide edge. Full-bleed
 backgrounds and images are fine, text touching the paper edge is not.
 The render result warns on size mismatches (`[page-size]`) and text
 at or past the edge (`[edge-margins]`, `[clipped-text]`). Beyond

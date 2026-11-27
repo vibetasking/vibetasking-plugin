@@ -44,10 +44,10 @@ A bare `Access denied.` says less. It can mean the key lacks permission for that
 
 # Holded in the browser (app.holded.com)
 
-For what the API doesn't cover, operate app.holded.com logged in; most of its data
+For what the API doesn't cover, operate app.holded.com logged in. Most of its data
 is served by internal APIs that scripts can call directly with the page's
 authenticated session, so once you're logged in you rarely need to click through
-the UI. If a request bounces to a login page, the session has expired — log in
+the UI. If a request bounces to a login page, the session has expired. Log in
 again. Purchase documents live under **Compras → Escáner** (the inbox/scanner).
 
 ## Bulk-download inbox documents
@@ -60,12 +60,12 @@ js(path="system/skills/holded/download_inbox_invoices.js", args={"startDate": "0
 ```
 - `startDate`, `endDate` (required): inclusive range, `dd/mm/yyyy` or `dd-mm-yyyy`.
 
-It returns a JSON object — check `downloadedCount`, `attemptedCount`,
+It returns a JSON object: check `downloadedCount`, `attemptedCount`,
 `failedCount`, and `failures[]` before reporting done. Files and the summary land
-in the sandbox Downloads folder. Runs synchronously; slow with many documents.
+in the sandbox Downloads folder. Runs synchronously. Slow with many documents.
 
 A document counts as downloaded only when its bytes open as the file its name says
-(PDF, PNG, JPEG, ZIP); an HTML or JSON answer lands in `failures[]` with the reason.
+(PDF, PNG, JPEG, ZIP). An HTML or JSON answer lands in `failures[]` with the reason.
 A file request that bounces to the login page stops the batch: `success` is false,
 `sessionExpired` is true, and `attemptedCount` is below `listedCount`. Log in again
 and rerun for the dates still missing.

@@ -19,7 +19,7 @@ excel write_data_to_excel --json '{"filepath": "report.xlsx", "sheet_name": "She
 - `excel create_excel_workbook` also creates Sheet1. Never call `excel create_excel_worksheet` unless you need an additional one.
 - Always set `include_ranges=True` when calling `excel get_workbook_metadata`.
 - Always provide `start_cell` when calling `excel write_data_to_excel`.
-- Always call `excel validate_all_formulas` after writing data. It checks formula syntax and references only — it does not compute values or catch runtime errors like `#DIV/0!`. See "Formula recalculation" below.
+- Always call `excel validate_all_formulas` after writing data. It checks formula syntax and references only. It does not compute values or catch runtime errors like `#DIV/0!`. See "Formula recalculation" below.
 - `excel read_data_from_excel` returns formula cells as formula strings, not computed values.
 - `excel` writes save in place on the target file, and every call loads and re-saves the whole workbook. Copy the user's original before editing it unless the task explicitly asks for an in-place edit, and batch bulk changes into one Python script rather than many CLI calls on a large file.
 - Use English function names, commas as separators, periods for decimals, regardless of language.
@@ -50,7 +50,7 @@ These shapes are complete: call them as written. For any other action,
 
 For bulk work on `.xlsx` files, a Python script in your shell beats many CLI calls. Known traps:
 
-- With `load_workbook(..., read_only=True)`, never call `ws.cell(row, col)` in a loop. Each call re-parses the sheet from the top, so a full scan turns quadratic — minutes on a few thousand rows. Stream with `ws.iter_rows(values_only=True)` instead; the same scan takes seconds.
+- With `load_workbook(..., read_only=True)`, never call `ws.cell(row, col)` in a loop. Each call re-parses the sheet from the top, so a full scan turns quadratic: minutes on a few thousand rows. Stream with `ws.iter_rows(values_only=True)` instead. The same scan takes seconds.
 - When a script times out, the script is usually the problem. Find and fix the slow part before rerunning with a longer `timeout`.
 - Never save a workbook loaded with `data_only=True`. Saving replaces every formula with its cached value, permanently. Load with `data_only=True` only to read.
 - A pandas round-trip (`read_excel` → `to_excel`) silently drops formulas, formatting, merged cells, and all other sheets. Use pandas when the deliverable is plain data. Edit existing workbooks with openpyxl.

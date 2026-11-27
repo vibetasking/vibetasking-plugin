@@ -43,15 +43,15 @@ look right. Pass `"landscape": true` to `html_to_pdf` for wide content
 (dashboards, comparison tables, anything 16:9).
 
 Margins: flow layout gets 25mm/20mm automatically (override with your
-own `@page { margin: … }`). In page layout `.page` starts marginless —
-pad it yourself (documents `25mm 20mm`, slides `12–18mm`) and keep
+own `@page { margin: … }`). In page layout `.page` starts marginless.
+Pad it yourself (documents `25mm 20mm`, slides `12–18mm`) and keep
 text ≥10mm off the paper edge unless intentionally full-bleed. In flow
 documents, give any colored box that must not split across pages the
 class `card` or `block`. The render result warns on violations
-(`[edge-margins]`, `[torn-block]`, …) — fix them or ignore them
+(`[edge-margins]`, `[torn-block]`, …). Fix them or ignore them
 deliberately, then always preview before delivering.
 
-For short, simple documents (1–2 pages) you can pass HTML inline:
+For short, simple documents (1-2 pages) you can pass HTML inline:
 
 ```bash
 pretty_docs html_to_pdf --json '{"html": "<html>...</html>", "output_file_name": "output.pdf"}'
